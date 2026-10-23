@@ -12,6 +12,7 @@ export type ListingView = {
   category: string;
   description: string;
   features: string | null;
+  featuredUntil: string | null;
   price: number | null;
   currency: string;
   city: string | null;
@@ -105,6 +106,7 @@ function toView(row: ListingRow, profiles: Map<string, ProfileRow>, reviews: Map
     category: row.category,
     description: row.description,
     features: row.features,
+    featuredUntil: row.featured_until || null,
     price: row.price,
     currency: row.currency || BASE_CURRENCY,
     city: row.city,
@@ -226,6 +228,11 @@ export async function listListings(options: ListOptions): Promise<ListingView[]>
       return matches(row, terms);
     });
     rows = sortRows(rows, options.sort);
+    rows = rows.slice().sort(function featuredFirst(a, b) {
+      const left = a.featured_until && new Date(a.featured_until).getTime() > Date.now() ? 1 : 0;
+      const right = b.featured_until && new Date(b.featured_until).getTime() > Date.now() ? 1 : 0;
+      return right - left;
+    });
     const views = rows.slice(0, limit).map(function map(row) {
       return toView(row, demoProfiles(), statsFrom(DEMO_REVIEWS));
     });
@@ -248,6 +255,7 @@ export async function listListings(options: ListOptions): Promise<ListingView[]>
   }
   if (clauses.length > 0) query = query.or(clauses.join(","));
 
+  query = query.order("featured_until", { ascending: false, nullsFirst: false });
   if (options.sort === "price-asc") query = query.order("price", { ascending: true, nullsFirst: false });
   else if (options.sort === "price-desc") query = query.order("price", { ascending: false, nullsFirst: false });
   else if (options.sort === "views") query = query.order("views", { ascending: false });
@@ -483,6 +491,65 @@ function rowFromDraft(ownerId: string, draft: ListingDraft, status: string): Dra
     affiliate_enabled: false,
     is_external: false,
   };
+}
+
+export async function listSavedIds(userId: string): Promise<string[]> {
+  if (!isSupabaseReady || !supabase) return [];
+  const result = await supabase
+    .from("saved_listings")
+    .select("listing_id")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(100);
+  if (result.error) throw new Error(result.error.message);
+  return ((result.data || []) as Array<{ listing_id: string }>).map(function id(row) {
+    return row.listing_id;
+  });
+}
+
+export async function saveListingFor(userId: string, listingId: string): Promise<void> {
+  if (!isSupabaseReady || !supabase) return;
+  const result = await supabase
+    .from("saved_listings")
+    .upsert({ user_id: userId, listing_id: listingId }, { onConflict: "user_id,listing_id", ignoreDuplicates: true });
+  if (result.error) throw new Error(result.error.message);
+}
+
+export async function unsaveListingFor(userId: string, listingId: string): Promise<void> {
+  if (!isSupabaseReady || !supabase) return;
+  const result = await supabase.from("saved_listings").delete().eq("user_id", userId).eq("listing_id", listingId);
+  if (result.error) throw new Error(result.error.message);
+}
+
+export async function clearSavedFor(userId: string): Promise<void> {
+  if (!isSupabaseReady || !supabase) return;
+  const result = await supabase.from("saved_listings").delete().eq("user_id", userId);
+  if (result.error) throw new Error(result.error.message);
+}
+
+export async function listingsByIds(ids: string[]): Promise<ListingView[]> {
+  if (ids.length === 0) return [];
+  if (!isSupabaseReady || !supabase) {
+    const profiles = demoProfiles();
+    const stats = statsFrom(DEMO_REVIEWS);
+    return DEMO_LISTINGS.filter(function find(row) {
+      return ids.indexOf(row.id) !== -1;
+    }).map(function view(row) {
+      return toView(row, profiles, stats);
+    });
+  }
+  const result = await supabase.from("listings").select("*").in("id", ids);
+  if (result.error) throw new Error(result.error.message);
+  const rows = (result.data || []) as ListingRow[];
+  const profileMap = await fetchProfiles(rows.map(function owner(row) {
+    return row.owner_id;
+  }));
+  const reviewMap = await fetchReviewStats(rows.map(function id(row) {
+    return row.id;
+  }));
+  return rows.map(function view(row) {
+    return toView(row, profileMap, reviewMap);
+  });
 }
 
 const OFFLINE_MESSAGE = "A publicacao requer a ligacao ao Supabase. Neste modo de demonstracao os anuncios nao sao guardados.";

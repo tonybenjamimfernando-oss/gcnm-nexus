@@ -15,6 +15,7 @@ export type MessageRow = {
   conversation_id: string;
   sender_id: string;
   body: string;
+  read_at: string | null;
   created_at: string;
 };
 
@@ -76,6 +77,38 @@ function miniMap(rows: ProfileMini[]): Map<string, ProfileMini> {
   const map = new Map<string, ProfileMini>();
   for (const row of rows) map.set(row.id, row);
   return map;
+}
+
+export async function unreadCount(userId: string): Promise<number> {
+  if (!isSupabaseReady || !supabase) return 0;
+  const conversations = await supabase
+    .from("conversations")
+    .select("id")
+    .or("participant_a.eq." + userId + ",participant_b.eq." + userId);
+  if (conversations.error) throw new Error(conversations.error.message);
+  const ids = unique(((conversations.data || []) as Array<{ id: string }>).map(function id(row) {
+    return row.id;
+  }));
+  if (ids.length === 0) return 0;
+  const result = await supabase
+    .from("messages")
+    .select("id", { count: "exact", head: true })
+    .in("conversation_id", ids)
+    .neq("sender_id", userId)
+    .is("read_at", null);
+  if (result.error) throw new Error(result.error.message);
+  return result.count || 0;
+}
+
+export async function markConversationRead(conversationId: string, userId: string): Promise<void> {
+  if (!isSupabaseReady || !supabase) return;
+  const result = await supabase
+    .from("messages")
+    .update({ read_at: new Date().toISOString() })
+    .eq("conversation_id", conversationId)
+    .neq("sender_id", userId)
+    .is("read_at", null);
+  if (result.error) throw new Error(result.error.message);
 }
 
 export async function listConversations(userId: string): Promise<ConversationView[]> {

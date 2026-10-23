@@ -30,12 +30,13 @@ confianca.
 
 - Conversas por anuncio, com lista de conversas e historico de mensagens.
 - Propostas de fornecedores aos pedidos de compra, com comparacao de precos e prazos.
-- Falta: aviso de novas mensagens na navegacao.
+- Aviso de novas mensagens na navegacao, com contagem por ler.
 
 ## Fase 3 - Pagamentos (em curso)
 
 - Feito: funcoes create-checkout e stripe-webhook, registo de encomendas, cobranca na moeda do anuncio e erro claro quando o Stripe ainda nao esta configurado.
-- Falta: conta e chaves do Stripe, moedas de cobranca e metodos por pais, fatura, ativacao automatica do plano, destaques e comissao de afiliacao.
+- Feito: destaque de anuncios atribuido pela administracao, com selo no cartao e prioridade na exploracao.
+- Falta: conta e chaves do Stripe, moedas de cobranca e metodos por pais, fatura, ativacao automatica do plano, destaques pagos e comissao de afiliacao.
 
 ## Fase 4 - Administracao e moderacao (em curso)
 
@@ -50,4 +51,5 @@ confianca.
 ## Fase 6 - Produto e operacao (em curso)
 
 - Feito: aplicacao instalavel (manifesto e service worker), multi-idioma na navegacao e modo demo sem configuracao.
-- Falta: guardados no servidor (nova tabela e migracao com RLS), SEO por sala, testes end-to-end das jornadas principais e monitorizacao de erros.
+- Feito: guardados na conta (tabela saved_listings com RLS) e testes automaticos da logica das jornadas (npm test).
+- Falta: SEO por sala, testes end-to-end no browser e monitorizacao de erros.

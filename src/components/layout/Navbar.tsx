@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Megaphone, Menu, Search, UserRound, X } from "lucide-react";
+import { Megaphone, Menu, Search, UserRound, X, MessageCircle } from "lucide-react";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 import CurrencySwitcher from "@/components/ui/CurrencySwitcher";
 import GlowButton from "@/components/ui/GlowButton";
 import { useSession } from "@/lib/session";
 import { useLanguage } from "@/lib/i18n";
+import { useUnreadMessages } from "@/lib/unread";
 import { cn } from "@/lib/cn";
 
 const LINKS = [
@@ -18,6 +19,7 @@ const LINKS = [
 ];
 
 export default function Navbar() {
+  const unread = useUnreadMessages();
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useSession();
@@ -133,6 +135,21 @@ export default function Navbar() {
             <LanguageSwitcher />
             <CurrencySwitcher />
           </div>
+          {user ? (
+            <Link
+              to="/mensagens"
+              className="relative hidden h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/5 text-haze-300 transition hover:border-glow-400/60 hover:text-white sm:grid"
+              aria-label="Mensagens"
+              title="Mensagens"
+            >
+              <MessageCircle className="h-4 w-4" />
+              {unread > 0 ? (
+                <span className="absolute -right-1 -top-1 grid h-5 min-w-[20px] place-items-center rounded-full bg-glow-500 px-1 text-[10px] font-bold text-ink-950">
+                  {unread > 9 ? "9+" : unread}
+                </span>
+              ) : null}
+            </Link>
+          ) : null}
           <GlowButton to={user ? "/painel" : "/entrar"} variant="glass" size="sm" className="hidden sm:inline-flex">
             <UserRound className="h-4 w-4" />
             {user ? t("nav.dashboard") : t("nav.signin")}
@@ -191,6 +208,19 @@ export default function Navbar() {
             >
               {user ? t("nav.dashboard") : t("nav.signin")}
             </Link>
+            {user ? (
+              <Link
+                to="/mensagens"
+                className="flex items-center gap-2 rounded-xl px-3 py-3 text-sm font-semibold text-haze-300 hover:bg-white/5 hover:text-white"
+              >
+                Mensagens
+                {unread > 0 ? (
+                  <span className="grid h-5 min-w-[20px] place-items-center rounded-full bg-glow-500 px-1 text-[10px] font-bold text-ink-950">
+                    {unread > 9 ? "9+" : unread}
+                  </span>
+                ) : null}
+              </Link>
+            ) : null}
             <Link
               to="/publicar"
               className="rounded-xl px-3 py-3 text-sm font-semibold text-haze-300 hover:bg-white/5 hover:text-white"

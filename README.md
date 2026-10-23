@@ -17,6 +17,9 @@ Versao melhorada do GCNM (Global Commerce Network Map): a mesma proposta e o mes
 - 12 salas comerciais, cada uma com 10 modulos funcionais.
 - Planos e precos em todas as moedas ISO, com taxas de referencia.
 - Conta (entrar, criar, ligacao por email) e painel com perfil, guardados e anuncios.
+- Guardados na conta (tabela saved_listings com RLS) e aviso de novas mensagens na navegacao.
+- Destaques de anuncios atribuidos pela administracao, com ordem propria na exploracao.
+- Testes automaticos da logica das jornadas (npm test).
 - Aplicacao instalavel (PWA), com manifesto e service worker.
 - Modo demo: sem variaveis de ambiente, a interface abre com dados de exemplo.
 
@@ -68,4 +71,4 @@ No Stripe, aponte o webhook para `https://<projeto>.supabase.co/functions/v1/str
 
 ## Fases seguintes
 
-Aviso de novas mensagens, destaques de anuncios e comissao de afiliacao, ativacao automatica do plano por pagamento, guardados no servidor (tabela e migracao com RLS), SEO por sala, testes end-to-end e monitorizacao de erros. Ver docs/ROADMAP.md.
+Destaques pagos e comissao de afiliacao, ativacao automatica do plano por pagamento, SEO por sala, testes end-to-end no browser e monitorizacao de erros. Ver docs/ROADMAP.md.

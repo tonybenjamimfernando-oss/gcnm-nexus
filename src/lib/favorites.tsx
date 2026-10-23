@@ -1,4 +1,8 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { clearSavedFor, listSavedIds, listingsByIds, saveListingFor, unsaveListingFor } from "./api";
+import type { ListingView } from "./api";
+import { useSession } from "./session";
+import { isSupabaseReady } from "./supabase";
 
 const KEY = "gcnm:favorites";
 
@@ -40,22 +44,89 @@ function readStored(): FavoriteEntry[] {
   }
 }
 
+function entryOf(view: ListingView): FavoriteEntry {
+  return {
+    id: view.id,
+    title: view.title,
+    cover: view.cover,
+    price: view.price,
+    currency: view.currency,
+    city: view.city,
+    country: view.country,
+    kind: view.kind,
+    savedAt: new Date().toISOString(),
+  };
+}
+
 export function FavoritesProvider({ children }: { children: ReactNode }) {
+  const { user } = useSession();
   const [items, setItems] = useState<FavoriteEntry[]>(readStored);
+  const inAccount = Boolean(user) && isSupabaseReady;
 
   useEffect(
-    function persist() {
+    function keepLocal() {
+      if (inAccount) return;
       try {
         window.localStorage.setItem(KEY, JSON.stringify(items));
       } catch {
         return;
       }
     },
-    [items],
+    [items, inAccount],
+  );
+
+  useEffect(
+    function followAccount() {
+      if (!user || !isSupabaseReady) return;
+      const userId = user.id;
+      let active = true;
+      async function run() {
+        const local = readStored();
+        for (const entry of local) {
+          await saveListingFor(userId, entry.id);
+        }
+        if (local.length > 0) {
+          try {
+            window.localStorage.removeItem(KEY);
+          } catch {
+            return;
+          }
+        }
+        const ids = await listSavedIds(userId);
+        const views = await listingsByIds(ids);
+        if (!active) return;
+        const index = new Map<string, ListingView>();
+        for (const view of views) index.set(view.id, view);
+        setItems(
+          ids
+            .map(function entry(id) {
+              const view = index.get(id);
+              return view ? entryOf(view) : null;
+            })
+            .filter(function present(entry): entry is FavoriteEntry {
+              return entry !== null;
+            }),
+        );
+      }
+      run().catch(function keep() {
+        return;
+      });
+      return function stop() {
+        active = false;
+      };
+    },
+    [user],
   );
 
   const value = useMemo<FavoritesValue>(
     function build() {
+      function write(id: string, saving: boolean) {
+        if (!user || !isSupabaseReady) return;
+        const work = saving ? saveListingFor(user.id, id) : unsaveListingFor(user.id, id);
+        work.catch(function keep() {
+          return;
+        });
+      }
       return {
         items,
         ids: items.map(function id(entry) {
@@ -67,32 +138,38 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
           });
         },
         toggle: function toggle(entry) {
-          setItems(function next(current) {
-            const exists = current.some(function match(item) {
-              return item.id === entry.id;
-            });
-            if (exists) {
-              return current.filter(function keep(item) {
-                return item.id !== entry.id;
-              });
-            }
-            return [entry].concat(current);
+          const exists = items.some(function match(item) {
+            return item.id === entry.id;
           });
+          setItems(
+            exists
+              ? items.filter(function keep(item) {
+                  return item.id !== entry.id;
+                })
+              : [entry].concat(items),
+          );
+          write(entry.id, !exists);
         },
         remove: function remove(id) {
-          setItems(function next(current) {
-            return current.filter(function keep(item) {
+          setItems(
+            items.filter(function keep(item) {
               return item.id !== id;
-            });
-          });
+            }),
+          );
+          write(id, false);
         },
         clear: function clear() {
           setItems([]);
+          if (user && isSupabaseReady) {
+            clearSavedFor(user.id).catch(function keep() {
+              return;
+            });
+          }
         },
         count: items.length,
       };
     },
-    [items],
+    [items, user],
   );
 
   return <FavoritesContext.Provider value={value}>{children}</FavoritesContext.Provider>;

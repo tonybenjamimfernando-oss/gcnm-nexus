@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { ArrowLeft, Bookmark, BookmarkCheck, Check, Eye, MapPin, MessageCircle, Send, Share2, ShieldCheck, ShoppingBag, Star, Store } from "lucide-react";
+import { ArrowLeft, Bookmark, BookmarkCheck, Check, Eye, MapPin, MessageCircle, Send, Share2, ShieldCheck, ShoppingBag, Star, Store, Sparkles } from "lucide-react";
 import EmptyState from "@/components/ui/EmptyState";
 import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
@@ -10,6 +10,7 @@ import MiniMap from "@/components/listings/MiniMap";
 import { getListing, listReviews, roomForListing } from "@/lib/api";
 import type { ListingView, ReviewView } from "@/lib/api";
 import { useCurrency } from "@/lib/currency";
+import { isFeatured } from "@/lib/featured";
 import { useFavorites } from "@/lib/favorites";
 import { accountTypeLabel, formatDate, formatMoney, formatMonthYear, formatNumber, listingKindLabel } from "@/lib/format";
 import { findRoom } from "@/lib/rooms";
@@ -288,6 +289,12 @@ export default function ListingDetail() {
                 <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-haze-300">
                   {item.category}
                 </span>
+                {isFeatured(item) ? (
+                  <span className="inline-flex items-center gap-1 rounded-full border border-glow-400/40 bg-glow-500/20 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-glow-400">
+                    <Sparkles className="h-3 w-3" />
+                    Destaque
+                  </span>
+                ) : null}
                 {room ? (
                   <Link
                     to={"/salas/" + room.slug}

@@ -5,7 +5,7 @@ import EmptyState from "@/components/ui/EmptyState";
 import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
 import Spinner from "@/components/ui/Spinner";
-import { listConversations, listMessages, sendMessage } from "@/lib/messaging";
+import { listConversations, listMessages, sendMessage, markConversationRead } from "@/lib/messaging";
 import type { ConversationView, MessageRow } from "@/lib/messaging";
 import { useSession } from "@/lib/session";
 import { cn } from "@/lib/cn";
@@ -63,6 +63,7 @@ export default function Messages() {
       try {
         const rows = await listMessages(activeId);
         setThread(rows);
+        if (user) await markConversationRead(activeId, user.id);
         setError(null);
       } catch (problem) {
         setError(problem instanceof Error ? problem.message : "Nao foi possivel abrir a conversa.");
@@ -70,7 +71,7 @@ export default function Messages() {
         setThreadLoading(false);
       }
     },
-    [activeId],
+    [activeId, user],
   );
 
   useEffect(

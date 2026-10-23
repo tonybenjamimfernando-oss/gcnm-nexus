@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { BadgeCheck, Flag, Megaphone, ShieldAlert, XCircle } from "lucide-react";
+import { BadgeCheck, Flag, Megaphone, ShieldAlert, XCircle, Sparkles } from "lucide-react";
 import EmptyState from "@/components/ui/EmptyState";
 import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
 import Spinner from "@/components/ui/Spinner";
-import { currentRole, listPendingListings, listReviewReports, moderateListing, moderateReport } from "@/lib/admin";
+import { currentRole, listPendingListings, listReviewReports, moderateListing, moderateReport, featureListing } from "@/lib/admin";
 import type { ReportView } from "@/lib/admin";
 import type { ListingRow } from "@/lib/demo";
 import { useSession } from "@/lib/session";
@@ -190,6 +190,30 @@ export default function Admin() {
                   }} disabled={busyId === item.id} size="sm">
                     <BadgeCheck className="h-4 w-4" />
                     Aprovar
+                  </GlowButton>
+                  <GlowButton onClick={function approveAndFeature() {
+                    setBusyId(item.id);
+                    setError(null);
+                    featureListing(item.id, 7)
+                      .then(function approve() {
+                        return moderateListing(item.id, "active");
+                      })
+                      .then(function drop() {
+                        setPendings(function next(current) {
+                          return current.filter(function keep(entry) {
+                            return entry.id !== item.id;
+                          });
+                        });
+                      })
+                      .catch(function failed(problem: unknown) {
+                        setError(problem instanceof Error ? problem.message : "Nao foi possivel destacar o anuncio.");
+                      })
+                      .finally(function done() {
+                        setBusyId(null);
+                      });
+                  }} disabled={busyId === item.id} variant="glass" size="sm">
+                    <Sparkles className="h-4 w-4" />
+                    Aprovar e destacar
                   </GlowButton>
                   <GlowButton onClick={function reject() {
                     decideListing(item.id, "archived");

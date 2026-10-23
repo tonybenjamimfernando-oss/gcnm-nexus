@@ -14,6 +14,7 @@ export type ListingRow = {
   longitude: number | null;
   images: string[];
   features: string | null;
+  featured_until?: string | null;
   is_external: boolean;
   source_store: string | null;
   source_url: string | null;
@@ -90,6 +91,7 @@ function listing(seed: Seed): ListingRow {
     longitude: seed.longitude ?? null,
     images: seed.images || shot(seed.id),
     features: seed.features || null,
+    featured_until: seed.featured_until || null,
     is_external: Boolean(seed.is_external),
     source_store: seed.source_store || null,
     source_url: seed.source_url || null,
@@ -234,6 +236,7 @@ export const DEMO_LISTINGS: ListingRow[] = [
     warranty: "12 anos de garantia de producao",
     delivery: "Envio nacional em 3 a 5 dias",
     features: features(["550W", "Monocristalino", "Garantia de 12 anos", "Inclui cabos MC4"]),
+    featured_until: "2026-12-31T23:59:00Z",
     views: 2210,
     created_at: "2026-10-19T11:15:00Z",
     owner_id: "p-2",

@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Bookmark, BookmarkCheck, Eye, MapPin, ShieldCheck, Star } from "lucide-react";
+import { Bookmark, BookmarkCheck, Eye, MapPin, ShieldCheck, Star, Sparkles } from "lucide-react";
 import type { ListingView } from "@/lib/api";
 import { formatNumber, listingKindLabel } from "@/lib/format";
 import { useCurrency } from "@/lib/currency";
+import { isFeatured } from "@/lib/featured";
 import { useFavorites } from "@/lib/favorites";
 
 const KIND_DOT: Record<string, string> = {
@@ -52,6 +53,12 @@ export default function ListingCard({ item }: { item: ListingView }) {
             <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: dot }} />
             {listingKindLabel(item.kind)}
           </span>
+          {isFeatured(item) ? (
+            <span className="absolute left-3 top-12 inline-flex items-center gap-1 rounded-full border border-glow-400/40 bg-glow-500/20 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-glow-400 backdrop-blur-md">
+              <Sparkles className="h-3 w-3" />
+              Destaque
+            </span>
+          ) : null}
           <button
             type="button"
             onClick={save}

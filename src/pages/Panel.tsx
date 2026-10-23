@@ -140,7 +140,7 @@ export default function Panel() {
             Guardados
           </span>
           <p className="mt-3 font-display text-2xl font-extrabold text-white">{favorites.count}</p>
-          <p className="mt-1 text-xs text-haze-500">ofertas guardadas neste dispositivo</p>
+          <p className="mt-1 text-xs text-haze-500">{user ? "ofertas guardadas na sua conta" : "ofertas guardadas neste dispositivo"}</p>
         </GlassCard>
       </div>
 

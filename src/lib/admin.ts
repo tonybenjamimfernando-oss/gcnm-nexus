@@ -18,6 +18,13 @@ export async function currentRole(userId: string): Promise<string | null> {
   return row ? row.role : null;
 }
 
+export async function featureListing(id: string, days: number): Promise<void> {
+  if (!isSupabaseReady || !supabase) throw new Error("A ligacao ao Supabase nao esta configurada neste ambiente.");
+  const until = new Date(Date.now() + days * 86400000).toISOString();
+  const result = await supabase.from("listings").update({ featured_until: until }).eq("id", id);
+  if (result.error) throw new Error(result.error.message);
+}
+
 export async function listPendingListings(): Promise<ListingRow[]> {
   if (!isSupabaseReady || !supabase) return [];
   const result = await supabase
