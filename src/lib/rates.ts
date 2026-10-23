@@ -75,7 +75,6 @@ export const RATES: Record<string, number> = {
   VND: 25100,
   KRW: 1360,
   TWD: 32.2,
-  KRW2: 0,
 };
 
 export function rateFor(code: string): number {
