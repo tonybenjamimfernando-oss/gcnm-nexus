@@ -14,6 +14,10 @@ import Plans from "@/pages/Plans";
 import RoomDetail from "@/pages/RoomDetail";
 import Rooms from "@/pages/Rooms";
 import SignIn from "@/pages/SignIn";
+import Stores from "@/pages/Stores";
+import StoreBuilder from "@/pages/StoreBuilder";
+import StoreDetail from "@/pages/StoreDetail";
+import StorePanel from "@/pages/StorePanel";
 import { CurrencyProvider } from "@/lib/currency";
 import { FavoritesProvider } from "@/lib/favorites";
 import { LanguageProvider } from "@/lib/i18n";
@@ -37,6 +41,10 @@ export default function App() {
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/salas" element={<Rooms />} />
                 <Route path="/salas/:slug" element={<RoomDetail />} />
+                <Route path="/lojas" element={<Stores />} />
+                <Route path="/lojas/montar" element={<StoreBuilder />} />
+                <Route path="/lojas/painel" element={<StorePanel />} />
+                <Route path="/loja/:slug" element={<StoreDetail />} />
                 <Route path="/mapa" element={<MapPage />} />
                 <Route path="/planos" element={<Plans />} />
                 <Route path="/entrar" element={<SignIn />} />

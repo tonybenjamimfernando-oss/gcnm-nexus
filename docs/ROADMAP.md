@@ -53,3 +53,8 @@ confianca.
 - Feito: aplicacao instalavel (manifesto e service worker), multi-idioma na navegacao e modo demo sem configuracao.
 - Feito: guardados na conta (tabela saved_listings com RLS) e testes automaticos da logica das jornadas (npm test).
 - Falta: SEO por sala, testes end-to-end no browser e monitorizacao de erros.
+
+## Fase 7 - Incubadora de lojas
+- Feito: contas de loja com dez servicos em tres niveis, painel do proprietario, montra publica e codigos de afiliado.
+- Feito: esquema stores, store_services, store_members e store_affiliates com RLS e ligacao das ofertas a loja (listings.store_id).
+- Falta: comissoes e liquidacoes automaticas, convites de equipa por email, verificacao de loja externa e analitica historica.

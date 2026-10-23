@@ -17,6 +17,7 @@ Versao melhorada do GCNM (Global Commerce Network Map): a mesma proposta e o mes
 - 12 salas comerciais, cada uma com 10 modulos funcionais.
 - Planos e precos em todas as moedas ISO, com taxas de referencia.
 - Conta (entrar, criar, ligacao por email) e painel com perfil, guardados e anuncios.
+- Incubadora de lojas: cada afiliado monta a sua loja com dez servicos em tres niveis (vitrine, catalogo, mensagens, pagamentos, entregas, reservas, equipa, afiliados, analitica e subscricoes), com painel proprio e montra publica em /loja/:slug.
 - Guardados na conta (tabela saved_listings com RLS) e aviso de novas mensagens na navegacao.
 - Destaques de anuncios atribuidos pela administracao, com ordem propria na exploracao.
 - Testes automaticos da logica das jornadas (npm test).

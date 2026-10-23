@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, Coins, ShieldCheck } from "lucide-react";
 import Hero from "@/components/home/Hero";
+import IncubatorBand from "@/components/home/IncubatorBand";
 import RoomsShowcase from "@/components/home/RoomsShowcase";
 import Spotlight from "@/components/home/Spotlight";
 import EmptyState from "@/components/ui/EmptyState";
@@ -67,6 +68,7 @@ export default function Home() {
       <Hero stats={stats} sample={items.length > 0 ? items[0] : null} />
       <Spotlight items={items.slice(0, 8)} loading={loading} />
       <RoomsShowcase />
+      <IncubatorBand />
 
       <section className="mx-auto mt-24 max-w-7xl">
         <SectionHeading

@@ -6,6 +6,8 @@ import { isFeatured } from "@/lib/featured";
 import { PLANS, findPlan } from "@/lib/plans";
 import { hasRate } from "@/lib/rates";
 import { MODULE_COUNT, ROOMS, findRoom, roomName } from "@/lib/rooms";
+import { STORE_SERVICES, STORE_TIERS, defaultServices } from "@/lib/storeServices";
+import { affiliateCode, getStoreBySlug, listStores, slugFrom } from "@/lib/stores";
 
 describe("salas comerciais", () => {
   it("tem doze salas, cada uma com dez modulos", () => {
@@ -77,5 +79,28 @@ describe("planos e destaques", () => {
     expect(isFeatured({ featuredUntil: null })).toBe(false);
     expect(isFeatured({ featuredUntil: new Date(Date.now() + 86400000).toISOString() })).toBe(true);
     expect(isFeatured({ featuredUntil: new Date(Date.now() - 86400000).toISOString() })).toBe(false);
+  });
+});
+
+describe("incubadora de lojas", () => {
+  it("tem dez servicos e tres niveis", () => {
+    expect(STORE_SERVICES.length).toBe(10);
+    expect(STORE_TIERS.length).toBe(3);
+    expect(defaultServices("starter").pagamentos).toBe(false);
+    expect(defaultServices("pro").pagamentos).toBe(true);
+    expect(defaultServices("scale").analitica).toBe(true);
+  });
+
+  it("lista lojas e abre pelo endereco", async () => {
+    const stores = await listStores({});
+    expect(stores.length).toBeGreaterThan(0);
+    const found = await getStoreBySlug(stores[0].slug);
+    expect(found?.name).toBe(stores[0].name);
+    expect(await getStoreBySlug("loja-inexistente")).toBeNull();
+  });
+
+  it("gera endereco e codigo de afiliado", () => {
+    expect(slugFrom("Solar Lusitana & Cia")).toBe("solar-lusitana-cia");
+    expect(affiliateCode("solar-lusitana").length).toBeGreaterThan(6);
   });
 });

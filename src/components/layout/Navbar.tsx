@@ -14,6 +14,7 @@ const LINKS = [
   { to: "/", key: "nav.home" },
   { to: "/explorar", key: "nav.explore" },
   { to: "/salas", key: "nav.rooms" },
+  { to: "/lojas", key: "nav.stores" },
   { to: "/mapa", key: "nav.map" },
   { to: "/planos", key: "nav.plans" },
 ];
@@ -221,6 +222,18 @@ export default function Navbar() {
                 ) : null}
               </Link>
             ) : null}
+            <Link
+              to="/lojas"
+              className="rounded-xl px-3 py-3 text-sm font-semibold text-haze-300 hover:bg-white/5 hover:text-white"
+            >
+              {t("nav.stores")}
+            </Link>
+            <Link
+              to={user ? "/lojas/painel" : "/lojas/montar"}
+              className="rounded-xl px-3 py-3 text-sm font-semibold text-haze-300 hover:bg-white/5 hover:text-white"
+            >
+              {user ? "Painel da loja" : "Montar a minha loja"}
+            </Link>
             <Link
               to="/publicar"
               className="rounded-xl px-3 py-3 text-sm font-semibold text-haze-300 hover:bg-white/5 hover:text-white"
