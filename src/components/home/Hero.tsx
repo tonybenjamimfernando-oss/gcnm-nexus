@@ -29,7 +29,7 @@ export default function Hero({ stats, sample }: Props) {
             Explorar as 12 salas
             <ArrowRight className="h-4 w-4" />
           </GlowButton>
-          <GlowButton to="/planos" variant="glass" size="lg">
+          <GlowButton to="/planos" variant="glass" size="lg" className="price-cta">
             Ver planos e precos
           </GlowButton>
         </div>
