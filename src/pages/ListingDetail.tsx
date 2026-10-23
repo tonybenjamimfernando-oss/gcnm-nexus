@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, Bookmark, BookmarkCheck, Check, Eye, MapPin, Share2, ShieldCheck, Star, Store } from "lucide-react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { ArrowLeft, Bookmark, BookmarkCheck, Check, Eye, MapPin, MessageCircle, Send, Share2, ShieldCheck, Star, Store } from "lucide-react";
 import EmptyState from "@/components/ui/EmptyState";
 import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
@@ -12,6 +12,8 @@ import { useCurrency } from "@/lib/currency";
 import { useFavorites } from "@/lib/favorites";
 import { accountTypeLabel, formatDate, formatMoney, formatMonthYear, formatNumber, listingKindLabel } from "@/lib/format";
 import { findRoom } from "@/lib/rooms";
+import { startConversation } from "@/lib/messaging";
+import { useSession } from "@/lib/session";
 
 export default function ListingDetail() {
   const params = useParams();
@@ -22,6 +24,24 @@ export default function ListingDetail() {
   const [reviews, setReviews] = useState<ReviewView[]>([]);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [contactError, setContactError] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const { user } = useSession();
+  const isOwner = Boolean(user && item && user.id === item.ownerId);
+
+  async function contact() {
+    if (!item) return;
+    if (!user) {
+      navigate("/entrar?next=/anuncio/" + item.id);
+      return;
+    }
+    try {
+      const conversationId = await startConversation(item.id, user.id, item.ownerId);
+      navigate("/mensagens/" + conversationId);
+    } catch (problem) {
+      setContactError(problem instanceof Error ? problem.message : "Nao foi possivel abrir a conversa.");
+    }
+  }
 
   useEffect(
     function load() {
@@ -276,6 +296,32 @@ export default function ListingDetail() {
                   <Store className="h-4 w-4" />
                   Ver mais deste vendedor
                 </GlowButton>
+                {!isOwner && item.kind !== "request" ? (
+                  <GlowButton onClick={contact} variant="glass" className="w-full">
+                    <MessageCircle className="h-4 w-4" />
+                    Contactar vendedor
+                  </GlowButton>
+                ) : null}
+                {!isOwner && item.kind === "request" ? (
+                  <GlowButton to={"/anuncio/" + item.id + "/propostas"} variant="glass" className="w-full">
+                    <Send className="h-4 w-4" />
+                    Enviar proposta
+                  </GlowButton>
+                ) : null}
+                {isOwner && item.kind === "request" ? (
+                  <GlowButton to={"/anuncio/" + item.id + "/propostas"} variant="glass" className="w-full">
+                    <MessageCircle className="h-4 w-4" />
+                    Ver propostas recebidas
+                  </GlowButton>
+                ) : null}
+                {isOwner ? (
+                  <GlowButton to={"/publicar?id=" + item.id} variant="ghost" className="w-full">
+                    Editar anuncio
+                  </GlowButton>
+                ) : null}
+                {contactError ? (
+                  <p className="text-xs text-amber-400">{contactError}</p>
+                ) : null}
               </div>
 
               {item.isExternal ? (

@@ -394,3 +394,115 @@ async function fetchReviewStats(ids: string[]): Promise<Map<string, ReviewStats>
   const rows = (result.data || []) as ReviewRow[];
   return statsFrom(rows);
 }
+
+export type ListingDraft = {
+  kind: string;
+  title: string;
+  category: string;
+  description: string;
+  price: number | null;
+  currency: string;
+  city: string | null;
+  country: string | null;
+  images: string[];
+  features: string | null;
+  brand: string | null;
+  condition: string | null;
+  warranty: string | null;
+  delivery: string | null;
+  returnsPolicy: string | null;
+  stock: number | null;
+  quantity: number | null;
+  budgetMax: number | null;
+  deadline: string | null;
+};
+
+type DraftRow = {
+  owner_id: string;
+  kind: string;
+  title: string;
+  description: string;
+  category: string;
+  images: string[];
+  price: number | null;
+  currency: string;
+  city: string | null;
+  country: string | null;
+  features: string | null;
+  brand: string | null;
+  condition: string | null;
+  warranty: string | null;
+  delivery: string | null;
+  returns_policy: string | null;
+  stock: number | null;
+  quantity: number | null;
+  budget_max: number | null;
+  deadline: string | null;
+  status: string;
+  publisher_relation: string;
+  contact_visibility: string;
+  affiliate_enabled: boolean;
+  is_external: boolean;
+};
+
+function rowFromDraft(ownerId: string, draft: ListingDraft, status: string): DraftRow {
+  return {
+    owner_id: ownerId,
+    kind: draft.kind,
+    title: draft.title,
+    description: draft.description,
+    category: draft.category || "other",
+    images: draft.images,
+    price: draft.price,
+    currency: draft.currency,
+    city: draft.city,
+    country: draft.country,
+    features: draft.features,
+    brand: draft.brand,
+    condition: draft.condition,
+    warranty: draft.warranty,
+    delivery: draft.delivery,
+    returns_policy: draft.returnsPolicy,
+    stock: draft.stock,
+    quantity: draft.quantity,
+    budget_max: draft.budgetMax,
+    deadline: draft.deadline,
+    status: status,
+    publisher_relation: "owner",
+    contact_visibility: "proposers",
+    affiliate_enabled: false,
+    is_external: false,
+  };
+}
+
+const OFFLINE_MESSAGE = "A publicacao requer a ligacao ao Supabase. Neste modo de demonstracao os anuncios nao sao guardados.";
+
+export async function createListing(userId: string, draft: ListingDraft, status: string): Promise<string | null> {
+  if (!isSupabaseReady || !supabase) throw new Error(OFFLINE_MESSAGE);
+  const result = await supabase.from("listings").insert(rowFromDraft(userId, draft, status)).select("id").single();
+  if (result.error) throw new Error(result.error.message);
+  return result.data.id as string;
+}
+
+export async function updateListing(id: string, ownerId: string, draft: ListingDraft): Promise<void> {
+  if (!isSupabaseReady || !supabase) throw new Error(OFFLINE_MESSAGE);
+  const row = rowFromDraft(ownerId, draft, "pending");
+  const result = await supabase.from("listings").update(row).eq("id", id).eq("owner_id", ownerId);
+  if (result.error) throw new Error(result.error.message);
+}
+
+export async function setListingStatus(id: string, ownerId: string, status: string): Promise<void> {
+  if (!isSupabaseReady || !supabase) throw new Error(OFFLINE_MESSAGE);
+  const result = await supabase
+    .from("listings")
+    .update({ status, updated_at: new Date().toISOString() })
+    .eq("id", id)
+    .eq("owner_id", ownerId);
+  if (result.error) throw new Error(result.error.message);
+}
+
+export async function removeListing(id: string, ownerId: string): Promise<void> {
+  if (!isSupabaseReady || !supabase) throw new Error(OFFLINE_MESSAGE);
+  const result = await supabase.from("listings").delete().eq("id", id).eq("owner_id", ownerId);
+  if (result.error) throw new Error(result.error.message);
+}

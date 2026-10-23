@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { Bookmark, LogOut, Megaphone, ShieldCheck, Store, UserRound, X } from "lucide-react";
+import { Bookmark, LogOut, Megaphone, MessageCircle, Pause, Pencil, Play, ShieldCheck, Store, Trash2, UserRound, X } from "lucide-react";
 import EmptyState from "@/components/ui/EmptyState";
 import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
 import Spinner from "@/components/ui/Spinner";
-import { getProfile, listMyListings } from "@/lib/api";
+import { getProfile, listMyListings, removeListing, setListingStatus } from "@/lib/api";
 import type { ListingView } from "@/lib/api";
 import type { ProfileRow } from "@/lib/demo";
 import { useCurrency } from "@/lib/currency";
@@ -20,6 +20,8 @@ export default function Panel() {
   const [profile, setProfile] = useState<ProfileRow | null>(null);
   const [mine, setMine] = useState<ListingView[]>([]);
   const [loading, setLoading] = useState(true);
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(
     function load() {
@@ -39,6 +41,41 @@ export default function Panel() {
     },
     [user],
   );
+
+  async function refreshMine() {
+    if (!user) return;
+    const rows = await listMyListings(user.id);
+    setMine(rows);
+  }
+
+  async function changeStatus(id: string, status: string) {
+    if (!user || busyId) return;
+    setBusyId(id);
+    setError(null);
+    try {
+      await setListingStatus(id, user.id, status);
+      await refreshMine();
+    } catch (problem) {
+      setError(problem instanceof Error ? problem.message : "Nao foi possivel atualizar o anuncio.");
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  async function drop(id: string) {
+    if (!user || busyId) return;
+    if (!window.confirm("Apagar definitivamente este anuncio?")) return;
+    setBusyId(id);
+    setError(null);
+    try {
+      await removeListing(id, user.id);
+      await refreshMine();
+    } catch (problem) {
+      setError(problem instanceof Error ? problem.message : "Nao foi possivel apagar o anuncio.");
+    } finally {
+      setBusyId(null);
+    }
+  }
 
   if (!ready) return <Spinner label="A verificar sessao" />;
   if (!user) return <Navigate to="/entrar?next=/painel" replace />;
@@ -111,14 +148,26 @@ export default function Panel() {
         <div className="flex flex-wrap items-center gap-3">
           <Store className="h-4 w-4 text-glow-400" />
           <p className="text-sm text-haze-300">
-            Publicar anuncios, mensagens e propostas entram na proxima fase. Nesta base ja pode explorar, comparar,
-            guardar e acompanhar o mercado.
+            Publique anuncios, responda a pedidos de compra e negocie por mensagem dentro do mercado.
           </p>
-          <GlowButton to="/planos" variant="glass" size="sm" className="ml-auto">
-            Ver planos
-          </GlowButton>
+          <div className="ml-auto flex flex-wrap gap-2">
+            <GlowButton to="/publicar" size="sm">
+              <Megaphone className="h-4 w-4" />
+              Publicar anuncio
+            </GlowButton>
+            <GlowButton to="/mensagens" variant="glass" size="sm">
+              <MessageCircle className="h-4 w-4" />
+              Mensagens
+            </GlowButton>
+          </div>
         </div>
       </GlassCard>
+
+      {error ? (
+        <p className="mt-5 rounded-2xl border border-amber-400/30 bg-amber-400/10 px-4 py-3 text-xs leading-5 text-amber-400">
+          {error}
+        </p>
+      ) : null}
 
       <section className="mt-10">
         <h2 className="font-display text-xl font-bold text-white">Ofertas guardadas</h2>
@@ -176,10 +225,10 @@ export default function Panel() {
           <div className="mt-4">
             <EmptyState
               title="Ainda sem anuncios publicados"
-              description="A publicacao de anuncios entra na proxima fase. Entretanto, explore as salas e guarde ofertas."
+              description="Publique o seu primeiro anuncio: escolha o tipo, descreva a oferta e envie para revisao."
               action={
-                <GlowButton to="/explorar" size="sm">
-                  Explorar ofertas
+                <GlowButton to="/publicar" size="sm">
+                  Publicar anuncio
                 </GlowButton>
               }
             />
@@ -199,12 +248,50 @@ export default function Panel() {
                       {item.title}
                     </Link>
                     <p className="mt-1 text-xs text-haze-500">
-                      {statusLabel(item.status)} - {item.city || "Sem local"}
+                      {listingKindLabel(item.kind)} - {statusLabel(item.status)} - {item.city || "Sem local"}
                     </p>
                   </div>
                   <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-haze-300">
                     {item.views} vistas
                   </span>
+                  <div className="flex flex-wrap gap-2">
+                    <Link
+                      to={"/publicar?id=" + item.id}
+                      className="inline-flex h-9 items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 text-xs font-bold text-haze-300 transition hover:border-glow-400/50 hover:text-white"
+                    >
+                      <Pencil className="h-3.5 w-3.5" />
+                      Editar
+                    </Link>
+                    {item.status === "draft" ? (
+                      <GlowButton onClick={function act() {
+                        changeStatus(item.id, "pending");
+                      }} disabled={busyId === item.id} variant="glass" size="sm">
+                        Enviar para revisao
+                      </GlowButton>
+                    ) : null}
+                    {item.status === "active" ? (
+                      <GlowButton onClick={function act() {
+                        changeStatus(item.id, "paused");
+                      }} disabled={busyId === item.id} variant="ghost" size="sm">
+                        <Pause className="h-3.5 w-3.5" />
+                        Pausar
+                      </GlowButton>
+                    ) : null}
+                    {item.status === "paused" ? (
+                      <GlowButton onClick={function act() {
+                        changeStatus(item.id, "active");
+                      }} disabled={busyId === item.id} variant="glass" size="sm">
+                        <Play className="h-3.5 w-3.5" />
+                        Reativar
+                      </GlowButton>
+                    ) : null}
+                    <GlowButton onClick={function act() {
+                      drop(item.id);
+                    }} disabled={busyId === item.id} variant="ghost" size="sm">
+                      <Trash2 className="h-3.5 w-3.5" />
+                      Apagar
+                    </GlowButton>
+                  </div>
                 </GlassCard>
               );
             })}

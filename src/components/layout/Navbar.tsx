@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Menu, Search, UserRound, X } from "lucide-react";
+import { Megaphone, Menu, Search, UserRound, X } from "lucide-react";
 import CurrencySwitcher from "@/components/ui/CurrencySwitcher";
 import GlowButton from "@/components/ui/GlowButton";
 import { useSession } from "@/lib/session";
@@ -132,6 +132,10 @@ export default function Navbar() {
             <UserRound className="h-4 w-4" />
             {user ? "Painel" : "Entrar"}
           </GlowButton>
+          <GlowButton to="/publicar" size="sm" className="hidden md:inline-flex">
+            <Megaphone className="h-4 w-4" />
+            Publicar
+          </GlowButton>
           <GlowButton to="/salas" size="sm" className="hidden md:inline-flex">
             Explorar salas
           </GlowButton>
@@ -181,6 +185,12 @@ export default function Navbar() {
               className="rounded-xl px-3 py-3 text-sm font-semibold text-haze-300 hover:bg-white/5 hover:text-white"
             >
               {user ? "Painel" : "Entrar"}
+            </Link>
+            <Link
+              to="/publicar"
+              className="rounded-xl px-3 py-3 text-sm font-semibold text-haze-300 hover:bg-white/5 hover:text-white"
+            >
+              Publicar anuncio
             </Link>
           </nav>
           <div className="mt-4 flex items-center justify-between gap-3">
