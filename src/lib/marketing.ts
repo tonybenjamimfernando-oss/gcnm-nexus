@@ -44,7 +44,7 @@ export function storeBrief(input: { id?: string; ownerId?: string; name: string;
     city: input.city || null,
     category: input.category || null,
     tagline: input.tagline || null,
-    tier: input.store.tier || "starter",
+    tier: input.tier || "starter",
     url: input.url,
     refCode: input.refCode || null,
   };
