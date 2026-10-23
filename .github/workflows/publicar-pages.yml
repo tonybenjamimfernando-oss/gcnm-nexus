@@ -1,0 +1,50 @@
+name: publicar-pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publicar-pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obter código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm install --no-audit --no-fund
+
+      - name: Validar TypeScript
+        run: npm run typecheck
+
+      - name: Executar testes
+        run: npm test
+
+      - name: Compilar aplicação
+        run: npm run build
+
+      - name: Preparar fallback para rotas SPA
+        run: cp dist/index.html dist/404.html
+
+      - name: Publicar artefactos no GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./dist
+          force_orphan: true
+          commit_message: "deploy: publicar GCNM a partir de ${{ github.sha }}"
