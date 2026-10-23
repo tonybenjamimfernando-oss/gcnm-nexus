@@ -15,6 +15,6 @@ if (container) {
 
 if (import.meta.env.PROD && "serviceWorker" in navigator) {
   window.addEventListener("load", function register() {
-    navigator.serviceWorker.register("/sw.js").catch(function keep() {});
+    navigator.serviceWorker.register(import.meta.env.BASE_URL + 'sw.js').catch(function keep() {});
   });
 }

@@ -21,7 +21,7 @@ import { SessionProvider } from "@/lib/session";
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <SessionProvider>
         <CurrencyProvider>
           <FavoritesProvider>
