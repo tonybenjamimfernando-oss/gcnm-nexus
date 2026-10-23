@@ -4,6 +4,8 @@ import { configMessage, isSupabaseReady, supabase } from "./supabase";
 export type SessionUser = { id: string; email: string | null };
 export type AuthResult = { error: string | null; info: string | null };
 
+type AuthSessionLike = { user: { id: string; email?: string | null } };
+
 type SessionValue = {
   user: SessionUser | null;
   ready: boolean;
@@ -26,7 +28,7 @@ function translate(message: string): string {
   return message;
 }
 
-function toUser(session: { user: { id: string; email?: string | null } } | null): SessionUser | null {
+function toUser(session: AuthSessionLike | null): SessionUser | null {
   if (!session) return null;
   return { id: session.user.id, email: session.user.email || null };
 }
@@ -41,12 +43,12 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       return;
     }
     let active = true;
-    supabase.auth.getSession().then(function loaded(result) {
+    supabase.auth.getSession().then(function loaded(result: { data: { session: AuthSessionLike | null } }) {
       if (!active) return;
       setUser(toUser(result.data.session));
       setReady(true);
     });
-    const subscription = supabase.auth.onAuthStateChange(function changed(_event, session) {
+    const subscription = supabase.auth.onAuthStateChange(function changed(_event: unknown, session: AuthSessionLike | null) {
       setUser(toUser(session));
     });
     return function stop() {
