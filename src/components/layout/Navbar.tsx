@@ -75,16 +75,16 @@ export default function Navbar() {
         scrolled ? "border-b border-white/10 bg-ink-950/75 backdrop-blur-2xl" : "border-b border-transparent",
       )}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 md:h-20 md:px-6">
-        <Link to="/" className="group flex shrink-0 items-center gap-2.5" aria-label="FLOWEBUY">
-          <span className="brand-orbit glass grid h-10 w-10 place-items-center rounded-2xl ring-1 ring-glow-400/40">
-            <span className="h-3.5 w-3.5 rounded-full bg-glow-500 shadow-[0_0_18px_4px_rgba(45,123,253,0.65)]" />
+      <div className="mx-auto flex h-[4.4rem] max-w-7xl items-center gap-2 px-3 sm:gap-3 sm:px-4 md:h-20 md:px-6">
+        <Link to="/" className="group flex min-w-0 shrink-0 items-center gap-2 sm:gap-2.5" aria-label="FLOWEBUY">
+          <span className="brand-orbit glass grid h-9 w-9 shrink-0 place-items-center rounded-xl ring-1 ring-emerald-300/30 sm:h-10 sm:w-10 sm:rounded-2xl">
+            <span className="h-3.5 w-3.5 rounded-full bg-emerald-300 shadow-[0_0_18px_4px_rgba(52,211,153,0.35)]" />
           </span>
           <span className="leading-none">
-            <span className="block font-display text-lg font-extrabold tracking-tight text-white">
+            <span className="block font-display text-[1.05rem] font-extrabold tracking-tight text-white sm:text-lg">
               FLOWE<span className="text-glow-400">BUY</span>
             </span>
-            <span className="block text-[9px] font-bold uppercase tracking-[0.3em] text-haze-500">FLOWER · WEB · BUY</span>
+            <span className="hidden text-[9px] font-bold uppercase tracking-[0.24em] text-haze-500 min-[390px]:block sm:tracking-[0.3em]">FLOWER · WEB · BUY</span>
           </span>
         </Link>
 
@@ -132,7 +132,7 @@ export default function Navbar() {
           />
         </form>
 
-        <div className="ml-auto flex items-center gap-2 lg:ml-2">
+        <div className="ml-auto flex shrink-0 items-center gap-1.5 sm:gap-2 lg:ml-2">
           <div className="hidden items-center gap-2 sm:flex">
             <LanguageSwitcher />
             <CurrencySwitcher />
@@ -170,7 +170,7 @@ export default function Navbar() {
                 return !value;
               });
             }}
-            className="glass grid h-10 w-10 place-items-center rounded-full text-haze-100 md:hidden"
+            className="glass grid h-10 w-10 shrink-0 place-items-center rounded-full border border-emerald-200/15 text-haze-100 transition hover:border-emerald-300/40 md:hidden"
             aria-label="Abrir menu"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
