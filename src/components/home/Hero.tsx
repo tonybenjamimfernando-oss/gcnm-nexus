@@ -1,5 +1,6 @@
 import { ArrowRight, Globe2, ShieldCheck, Sparkles } from "lucide-react";
 import FloatingLayers from "@/components/home/FloatingLayers";
+import CosmicWormhole from "@/components/home/CosmicWormhole";
 import GlowButton from "@/components/ui/GlowButton";
 import type { ListingView, PlatformStats } from "@/lib/api";
 
@@ -45,6 +46,8 @@ export default function Hero({ stats, sample }: Props) {
           <span>{stats.listings} ofertas ativas</span>
         </div>
       </div>
+
+      <CosmicWormhole />
 
       <div className="mt-14">
         <FloatingLayers sample={sample} stats={stats} />
