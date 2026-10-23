@@ -280,3 +280,84 @@ h3 {
     transform: none;
   }
 }
+
+
+/* Portal cósmico de descoberta aleatória GCNM */
+.cosmic-wormhole {
+  position: relative;
+  isolation: isolate;
+  color: #eef5ff;
+}
+.wormhole-heading { position: relative; z-index: 2; margin: 0 auto 1rem; max-width: 44rem; text-align: center; }
+.wormhole-kicker { display: inline-flex; align-items: center; gap: .5rem; color: #8deaff; font-size: .65rem; font-weight: 800; letter-spacing: .24em; }
+.wormhole-heading h2 { margin: .7rem 0 0; font-size: clamp(1.45rem, 3vw, 2.25rem); font-weight: 900; line-height: 1.1; }
+.wormhole-heading h2 span { color: #82c8ff; text-shadow: 0 0 25px rgba(68, 156, 255, .5); }
+.wormhole-heading p { margin: .75rem auto 0; max-width: 38rem; color: #a9bad2; font-size: .86rem; line-height: 1.6; }
+.wormhole-scene {
+  position: relative; min-height: 390px; overflow: hidden; border-radius: 1.8rem;
+  border: 1px solid rgba(133, 186, 255, .2);
+  background: radial-gradient(ellipse at 50% 48%, rgba(26, 40, 83, .5), transparent 42%), linear-gradient(145deg, rgba(4, 9, 23, .97), rgba(10, 13, 31, .94) 52%, rgba(7, 10, 24, .98));
+  box-shadow: inset 0 0 80px rgba(28, 95, 180, .12), 0 28px 80px -50px rgba(39, 112, 255, .5);
+}
+.wormhole-stars, .wormhole-nebula, .wormhole-orbit, .wormhole-accretion, .wormhole-lens, .wormhole-core { position: absolute; pointer-events: none; }
+.wormhole-stars { inset: 0; opacity: .75; background-image: radial-gradient(1px 1px at 8% 24%, #fff 50%, transparent 100%), radial-gradient(1px 1px at 21% 76%, #8bdcff 50%, transparent 100%), radial-gradient(2px 2px at 37% 19%, #fff 50%, transparent 100%), radial-gradient(1px 1px at 70% 22%, #fff 50%, transparent 100%), radial-gradient(1px 1px at 88% 70%, #a6c9ff 50%, transparent 100%), radial-gradient(2px 2px at 79% 43%, #fff 50%, transparent 100%), radial-gradient(1px 1px at 12% 59%, #b6bfff 50%, transparent 100%), radial-gradient(1px 1px at 60% 84%, #fff 50%, transparent 100%); }
+.wormhole-nebula { width: 38%; height: 60%; top: 20%; border-radius: 50%; filter: blur(38px); opacity: .22; }
+.nebula-a { left: 15%; background: #235bff; animation: nebulaDrift 11s ease-in-out infinite alternate; }
+.nebula-b { right: 13%; background: #b23cff; animation: nebulaDrift 13s ease-in-out infinite alternate-reverse; }
+.wormhole-orbit { left: 50%; top: 48%; border: 1px solid rgba(121, 195, 255, .23); border-radius: 50%; transform: translate(-50%, -50%) rotate(-14deg); }
+.orbit-outer { width: min(78%, 680px); height: 62%; animation: orbitBreath 8s ease-in-out infinite; }
+.orbit-middle { width: min(65%, 550px); height: 49%; border-color: rgba(179, 112, 255, .3); transform: translate(-50%, -50%) rotate(22deg); }
+.orbit-inner { width: min(48%, 420px); height: 37%; border-style: dashed; border-color: rgba(111, 221, 255, .22); }
+.wormhole-accretion { left: 50%; top: 48%; width: min(43%, 340px); aspect-ratio: 2.4 / 1; border-radius: 50%; transform: translate(-50%, -50%) rotate(-17deg); background: conic-gradient(from 35deg, transparent 0 10%, rgba(255, 94, 39, .95) 15%, rgba(255, 190, 96, .95) 23%, rgba(116, 190, 255, .8) 34%, rgba(155, 81, 255, .8) 48%, transparent 62% 75%, rgba(255, 127, 60, .7) 84%, transparent 94%); filter: blur(2px); box-shadow: 0 0 22px rgba(255, 125, 72, .45), 0 0 55px rgba(76, 130, 255, .25); animation: accretionSpin 18s linear infinite; }
+.wormhole-lens { left: 50%; top: 48%; width: min(29%, 220px); aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, -50%); background: radial-gradient(circle, transparent 48%, rgba(91, 177, 255, .18) 52%, transparent 62%); box-shadow: 0 0 30px rgba(100, 165, 255, .55), inset 0 0 28px rgba(115, 177, 255, .28); }
+.wormhole-core { left: 50%; top: 48%; width: min(22%, 160px); aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, -50%); background: radial-gradient(circle at 35% 30%, #101322, #010207 62%, #000 75%); box-shadow: 0 0 30px 12px rgba(0, 0, 0, .95), 0 0 0 1px rgba(255,255,255,.08); }
+.wormhole-enter { position: absolute; z-index: 5; left: 50%; top: 48%; display: flex; min-width: 145px; flex-direction: column; align-items: center; gap: .35rem; transform: translate(-50%, -50%); border: 1px solid rgba(155, 218, 255, .48); border-radius: 999px; padding: .85rem 1.2rem; color: white; background: rgba(6, 12, 29, .82); box-shadow: 0 0 25px rgba(57, 145, 255, .28), inset 0 0 18px rgba(78, 140, 255, .1); backdrop-filter: blur(12px); cursor: pointer; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+.wormhole-enter:hover:not(:disabled) { transform: translate(-50%, -50%) scale(1.06); border-color: rgba(173, 232, 255, .9); box-shadow: 0 0 38px rgba(57, 145, 255, .55); }
+.wormhole-enter:disabled { cursor: progress; opacity: .8; }
+.wormhole-enter-icon { display: grid; width: 2rem; height: 2rem; place-items: center; border-radius: 50%; color: #a7e7ff; background: rgba(71, 149, 255, .18); }
+.wormhole-enter > span:nth-child(2) { font-size: .78rem; font-weight: 800; letter-spacing: .02em; }
+.wormhole-enter small { color: #8ba4c7; font-size: .62rem; }
+.wormhole-item { position: absolute; z-index: 3; display: flex; width: 64px; height: 64px; flex-direction: column; align-items: center; justify-content: center; gap: .2rem; border: 1px solid rgba(144, 196, 255, .28); border-radius: 18px; color: #d7eaff; background: linear-gradient(145deg, rgba(29, 51, 91, .8), rgba(8, 15, 34, .8)); box-shadow: 0 8px 25px rgba(0, 0, 0, .28), inset 0 1px rgba(255,255,255,.08); backdrop-filter: blur(12px); animation: artifactFloat 5s ease-in-out infinite; }
+.wormhole-item span { font-size: .55rem; font-weight: 700; white-space: nowrap; color: #a6c1e3; }
+.item-one { left: 13%; top: 16%; color: #ffbc79; animation-delay: -.8s; }
+.item-two { left: 28%; top: 8%; animation-delay: -2s; }
+.item-three { right: 25%; top: 9%; color: #8ee7ff; animation-delay: -1.2s; }
+.item-four { right: 12%; top: 22%; color: #9dffce; animation-delay: -3s; }
+.item-five { right: 10%; bottom: 20%; color: #c7aaff; animation-delay: -1.7s; }
+.item-six { right: 28%; bottom: 8%; color: #ffcc8a; animation-delay: -2.5s; }
+.item-seven { left: 28%; bottom: 8%; color: #8ee7ff; animation-delay: -1s; }
+.item-eight { left: 11%; bottom: 21%; color: #b9ffdd; animation-delay: -3.5s; }
+.item-nine { left: 4%; top: 45%; animation-delay: -2.2s; }
+.item-ten { right: 4%; top: 45%; animation-delay: -4s; }
+.wormhole-caption { position: absolute; bottom: 1rem; z-index: 2; color: rgba(154, 184, 224, .55); font-size: .52rem; font-weight: 800; letter-spacing: .18em; }
+.caption-left { left: 1.2rem; }
+.caption-right { right: 1.2rem; text-align: right; }
+.wormhole-footnote { margin: .75rem auto 0; max-width: 45rem; text-align: center; color: #758aa8; font-size: .7rem; line-height: 1.5; }
+@keyframes accretionSpin { from { transform: translate(-50%, -50%) rotate(-17deg) scale(1); } to { transform: translate(-50%, -50%) rotate(343deg) scale(1.03); } }
+@keyframes artifactFloat { 0%,100% { translate: 0 0; } 50% { translate: 0 -9px; } }
+@keyframes orbitBreath { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
+@keyframes nebulaDrift { from { transform: translateX(-8px) scale(.95); } to { transform: translateX(12px) scale(1.08); } }
+@media (max-width: 640px) {
+  .wormhole-scene { min-height: 340px; border-radius: 1.25rem; }
+  .wormhole-item { width: 48px; height: 48px; border-radius: 14px; }
+  .wormhole-item span { font-size: .46rem; }
+  .item-one { left: 7%; top: 13%; }
+  .item-two { left: 24%; top: 5%; }
+  .item-three { right: 23%; top: 5%; }
+  .item-four { right: 6%; top: 15%; }
+  .item-five { right: 5%; bottom: 16%; }
+  .item-six { right: 22%; bottom: 5%; }
+  .item-seven { left: 22%; bottom: 5%; }
+  .item-eight { left: 5%; bottom: 16%; }
+  .item-nine { left: 1%; top: 43%; }
+  .item-ten { right: 1%; top: 43%; }
+  .wormhole-accretion { width: 52%; }
+  .wormhole-lens { width: 35%; }
+  .wormhole-core { width: 25%; }
+  .wormhole-enter { min-width: 126px; padding: .7rem .85rem; }
+  .wormhole-caption { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wormhole-nebula, .wormhole-orbit, .wormhole-accretion, .wormhole-item { animation: none !important; }
+  .wormhole-enter { transition: none; }
+}
