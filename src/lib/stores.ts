@@ -135,14 +135,16 @@ function view(row: StoreRow, owner: OwnerRow | null, services: string[], listing
 
 async function decorate(rows: StoreRow[]): Promise<StoreView[]> {
   if (rows.length === 0) return [];
+  const client = supabase;
+  if (!client) return rows.map(function plain(row) { return view(row, null, [], 0); });
   const ids = rows.map(function id(row) { return row.id; });
   const ownerIds: string[] = [];
   for (const row of rows) if (ownerIds.indexOf(row.owner_id) === -1) ownerIds.push(row.owner_id);
-  const owners = await supabase.from("profiles").select("id,display_name,company_name,is_verified").in("id", ownerIds);
+  const owners = await client.from("profiles").select("id,display_name,company_name,is_verified").in("id", ownerIds);
   if (owners.error) throw new Error(owners.error.message);
-  const services = await supabase.from("store_services").select("store_id,service").in("store_id", ids).eq("enabled", true);
+  const services = await client.from("store_services").select("store_id,service").in("store_id", ids).eq("enabled", true);
   if (services.error) throw new Error(services.error.message);
-  const catalog = await supabase.from("listings").select("store_id").in("store_id", ids);
+  const catalog = await client.from("listings").select("store_id").in("store_id", ids);
   if (catalog.error) throw new Error(catalog.error.message);
   const ownerMap = new Map<string, OwnerRow>();
   for (const row of (owners.data || []) as OwnerRow[]) ownerMap.set(row.id, row);
