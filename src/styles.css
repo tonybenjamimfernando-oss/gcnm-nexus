@@ -361,3 +361,94 @@ h3 {
   .wormhole-nebula, .wormhole-orbit, .wormhole-accretion, .wormhole-item { animation: none !important; }
   .wormhole-enter { transition: none; }
 }
+
+
+/* Experiencia de mercado: cabecalho vivo, precos premium e tendencias */
+.market-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(77,147,255,.8), rgba(255,196,107,.85), transparent);
+  background-size: 220% 100%;
+  opacity: .72;
+  animation: headerBeam 8s linear infinite;
+}
+@keyframes headerBeam { from { background-position: 100% 0; } to { background-position: -120% 0; } }
+.brand-orbit { position: relative; isolation: isolate; overflow: hidden; transition: transform .35s ease, box-shadow .35s ease; }
+.brand-orbit::before { content:""; position:absolute; inset:-45%; border:1px solid rgba(111,221,255,.7); border-radius:50%; transform:rotate(-30deg); animation: brandOrbit 7s linear infinite; }
+.brand-orbit::after { content:""; position:absolute; inset:0; border-radius:inherit; background:linear-gradient(120deg,transparent 20%,rgba(255,255,255,.25) 48%,transparent 70%); transform:translateX(-130%); animation: brandSweep 6s ease-in-out infinite; }
+.group:hover .brand-orbit { transform:rotate(-8deg) scale(1.06); box-shadow:0 0 28px rgba(45,123,253,.3); }
+@keyframes brandOrbit { to { rotate:360deg; } }
+@keyframes brandSweep { 0%,55% { transform:translateX(-130%); } 78%,100% { transform:translateX(130%); } }
+.nav-pricing-link { color:#ffdc91; }
+.nav-pricing-link > span:last-child { text-shadow:0 0 18px rgba(255,196,107,.25); }
+.nav-search-input { transition: border-color .25s ease, box-shadow .25s ease, background .25s ease; }
+.nav-search-input:focus { background:rgba(8,13,24,.92); box-shadow:0 0 0 3px rgba(255,196,107,.09),0 0 26px rgba(45,123,253,.14); }
+.price-cta {
+  position:relative; isolation:isolate; overflow:hidden;
+  color:#211405 !important; font-weight:900;
+  border:1px solid rgba(255,225,157,.8) !important;
+  background:linear-gradient(115deg,#b77916 0%,#f6d889 22%,#fff0b8 38%,#d79a2b 58%,#ffdf8c 78%,#a76b12 100%) !important;
+  background-size:220% 100% !important;
+  box-shadow:0 8px 24px -9px rgba(255,190,66,.7),inset 0 1px 0 rgba(255,255,255,.65);
+  animation: goldPulse 3.2s ease-in-out infinite, goldSweep 7s linear infinite;
+  transition:transform .22s ease, box-shadow .22s ease;
+}
+.price-cta::after { content:""; position:absolute; z-index:-1; inset:0; background:linear-gradient(105deg,transparent 28%,rgba(255,255,255,.55) 48%,transparent 66%); transform:translateX(-130%); animation: goldGlint 4.5s ease-in-out infinite; }
+.price-cta:hover { transform:translateY(-2px); box-shadow:0 13px 34px -8px rgba(255,190,66,.85),inset 0 1px 0 rgba(255,255,255,.8); }
+@keyframes goldPulse { 0%,100% { box-shadow:0 8px 24px -9px rgba(255,190,66,.55),inset 0 1px 0 rgba(255,255,255,.65); } 50% { box-shadow:0 10px 32px -7px rgba(255,190,66,.85),inset 0 1px 0 rgba(255,255,255,.8); } }
+@keyframes goldSweep { from { background-position:100% 0; } to { background-position:-120% 0; } }
+@keyframes goldGlint { 0%,58% { transform:translateX(-130%); } 82%,100% { transform:translateX(130%); } }
+.plan-card { transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease; }
+.plan-card:hover { transform:translateY(-5px); border-color:rgba(255,196,107,.48); box-shadow:0 24px 60px -40px rgba(255,190,66,.38); }
+.plan-price { color:#ffdc91; text-shadow:0 0 24px rgba(255,196,107,.19); }
+.trend-panel { min-width:0; overflow:hidden; border:1px solid rgba(255,196,107,.2); border-radius:1.45rem; background:linear-gradient(155deg,rgba(24,24,32,.94),rgba(7,12,24,.92)); box-shadow:0 22px 60px -42px rgba(255,176,55,.32),inset 0 1px 0 rgba(255,255,255,.055); }
+.trend-panel-heading { display:flex; align-items:center; gap:.7rem; padding:1.1rem 1rem .5rem; }
+.trend-heading-icon { display:grid; width:2.25rem; height:2.25rem; flex-shrink:0; place-items:center; border:1px solid rgba(255,196,107,.28); border-radius:.8rem; color:#ffcf75; background:rgba(255,196,107,.1); box-shadow:0 0 20px rgba(255,196,107,.09); }
+.trend-eyebrow { color:#e9b85c; font-size:.58rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; }
+.trend-panel-heading h2 { margin-top:.15rem; color:#fff5df; font-family:var(--font-display); font-size:1rem; font-weight:850; letter-spacing:-.02em; }
+.trend-heading-chart { margin-left:auto; color:#e9b85c; }
+.trend-intro { padding:0 1rem .85rem; color:#8fa0b8; font-size:.72rem; line-height:1.5; }
+.trend-viewport { height:425px; overflow:hidden; position:relative; mask-image:linear-gradient(transparent,black 4%,black 96%,transparent); }
+.trend-track { display:flex; flex-direction:column; animation:trendRise 36s linear infinite; }
+.trend-panel:hover .trend-track { animation-play-state:paused; }
+.trend-item { flex:0 0 auto; margin:0 .65rem .55rem; border:1px solid rgba(255,255,255,.07); border-radius:1rem; background:rgba(255,255,255,.035); transition:border-color .2s,background .2s; }
+.trend-item:hover { border-color:rgba(255,196,107,.3); background:rgba(255,196,107,.055); }
+.trend-item-link { display:flex; align-items:center; gap:.6rem; min-width:0; padding:.6rem; color:inherit; text-decoration:none; }
+.trend-rank { display:grid; width:1.35rem; height:1.35rem; flex-shrink:0; place-items:center; border-radius:.45rem; background:rgba(255,196,107,.1); color:#ffd88d; font-size:.62rem; font-weight:900; }
+.trend-item-link img { width:3.4rem; height:3.4rem; flex-shrink:0; border-radius:.7rem; object-fit:cover; background:#101827; }
+.trend-item-copy { display:flex; min-width:0; flex:1; flex-direction:column; gap:.2rem; }
+.trend-item-title { display:-webkit-box; overflow:hidden; color:#e8effb; font-size:.72rem; font-weight:750; line-height:1.35; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+.trend-item-price { color:#ffd17c; font-size:.75rem; font-weight:900; }
+.trend-item-meta { color:#8192aa; font-size:.62rem; }
+.trend-item-arrow { flex-shrink:0; color:#b89a63; }
+.trend-footer { display:flex; align-items:center; justify-content:space-between; gap:.5rem; margin:.25rem .75rem .75rem; padding:.8rem .85rem; border:1px solid rgba(255,196,107,.2); border-radius:.9rem; color:#ffdc91; font-size:.72rem; font-weight:800; text-decoration:none; transition:background .2s; }
+.trend-footer:hover { background:rgba(255,196,107,.08); }
+.trend-loading { display:flex; align-items:center; gap:.6rem; min-height:120px; padding:1rem; color:#9aabc3; font-size:.75rem; }
+.trend-loading span { width:.65rem; height:.65rem; border-radius:50%; background:#ffc46b; box-shadow:0 0 14px #ffc46b; animation:trendPulse 1.2s ease-in-out infinite; }
+@keyframes trendPulse { 50% { opacity:.35; transform:scale(.75); } }
+@keyframes trendRise { from { transform:translateY(0); } to { transform:translateY(-50%); } }
+@media (max-width:1279px) {
+  .trend-viewport { height:auto; overflow-x:auto; overflow-y:hidden; mask-image:none; scrollbar-width:none; }
+  .trend-viewport::-webkit-scrollbar { display:none; }
+  .trend-track { width:max-content; max-width:none; flex-direction:row; padding:.1rem .1rem .7rem; animation:none; }
+  .trend-item { width:250px; margin:0 .3rem; }
+  .trend-item-link { padding:.65rem; }
+  .trend-footer { margin-top:.1rem; }
+}
+@media (max-width:640px) {
+  .price-cta { min-height:2.8rem; animation:goldPulse 3.8s ease-in-out infinite; }
+  .trend-panel { border-radius:1.1rem; }
+  .trend-panel-heading { padding:.9rem .85rem .45rem; }
+  .trend-intro { padding:0 .85rem .65rem; }
+  .trend-item { width:225px; }
+  .trend-item-link img { width:3rem; height:3rem; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .market-header::after,.brand-orbit::before,.brand-orbit::after,.price-cta,.price-cta::after,.trend-track,.trend-loading span { animation:none !important; }
+  .plan-card,.price-cta,.brand-orbit { transition:none !important; }
+}
