@@ -8,6 +8,7 @@ import { hasRate } from "@/lib/rates";
 import { MODULE_COUNT, ROOMS, findRoom, roomName } from "@/lib/rooms";
 import { STORE_SERVICES, STORE_TIERS, defaultServices } from "@/lib/storeServices";
 import { affiliateCode, getStoreBySlug, listStores, slugFrom } from "@/lib/stores";
+import { BONUS_FUND_CEILING_USD, STORE_PLANS, annualSaving, bonusFundShare, commissionRate, creditShare, firstMonthBonus, levelForActive, monthlyStatement, nextLevelFor, planNetUsd, planPrice, poolFor, round2, storesToNextLevel } from "@/lib/economy";
 
 describe("salas comerciais", () => {
   it("tem doze salas, cada uma com dez modulos", () => {
@@ -102,5 +103,62 @@ describe("incubadora de lojas", () => {
   it("gera endereco e codigo de afiliado", () => {
     expect(slugFrom("Solar Lusitana & Cia")).toBe("solar-lusitana-cia");
     expect(affiliateCode("solar-lusitana").length).toBeGreaterThan(6);
+  });
+});
+
+describe("motor economico", () => {
+  it("sobe de nivel com lojas pagas ativas", () => {
+    expect(levelForActive(0).id).toBe("bronze");
+    expect(commissionRate(0)).toBe(20);
+    expect(levelForActive(2).id).toBe("bronze");
+    expect(levelForActive(3).id).toBe("prata");
+    expect(commissionRate(9)).toBe(25);
+    expect(levelForActive(10).id).toBe("ouro");
+    expect(commissionRate(25)).toBe(30);
+    expect(storesToNextLevel(2)).toBe(1);
+    expect(nextLevelFor(25)).toBeNull();
+  });
+
+  it("mantem cada plano pago com margem positiva", () => {
+    for (const plan of STORE_PLANS) {
+      if (plan.monthlyUsd === 0) continue;
+      expect(planNetUsd(plan)).toBeGreaterThan(0);
+      expect(creditShare(plan)).toBeLessThanOrEqual(70);
+      expect(annualSaving(plan)).toBe(2);
+      expect(planPrice(plan, "month")).toBe(plan.monthlyUsd);
+      expect(planPrice(plan, "year")).toBe(plan.yearlyUsd);
+    }
+  });
+
+  it("paga o primeiro mes como bonus sem acumular com a comissao", () => {
+    expect(firstMonthBonus("pro")).toBe(19);
+    expect(firstMonthBonus("vitrine")).toBe(0);
+    const statement = monthlyStatement([
+      { planId: "pro", monthsActive: 1 },
+      { planId: "escala", monthsActive: 6 },
+      { planId: "pro", monthsActive: 4 },
+      { planId: "vitrine", monthsActive: 8 },
+      { planId: "pro", monthsActive: 3, status: "cancelled" },
+    ]);
+    expect(statement.activeCount).toBe(4);
+    expect(statement.paidCount).toBe(3);
+    expect(statement.level.id).toBe("prata");
+    expect(statement.rate).toBe(25);
+    expect(statement.firstMonthUsd).toBe(19);
+    expect(statement.recurringUsd).toBe(round2(49 * 0.25 + 19 * 0.25));
+    expect(statement.milestonesUsd).toBe(25);
+    expect(statement.totalUsd).toBe(61);
+    expect(statement.pendingUsd).toBe(61);
+    expect(statement.payableUsd).toBe(61);
+    expect(statement.nextMilestone ? statement.nextMilestone.active : 0).toBe(10);
+  });
+
+  it("reparte o fundo de bonus em proporcao e com teto", () => {
+    expect(poolFor(1000)).toBe(30);
+    expect(poolFor(0)).toBe(0);
+    expect(bonusFundShare(100, 400, 40)).toBe(10);
+    expect(bonusFundShare(100, 100, 40)).toBe(40);
+    expect(bonusFundShare(400, 400, 400)).toBe(BONUS_FUND_CEILING_USD);
+    expect(bonusFundShare(0, 400, 40)).toBe(0);
   });
 });

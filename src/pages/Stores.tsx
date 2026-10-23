@@ -5,7 +5,9 @@ import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
 import NeoTile from "@/components/ui/NeoTile";
 import Spinner from "@/components/ui/Spinner";
+import BonusLadder from "@/components/stores/BonusLadder";
 import StoreCard from "@/components/stores/StoreCard";
+import StorePlanCards from "@/components/stores/StorePlanCards";
 import { STORE_CATEGORIES, STORE_SERVICES } from "@/lib/storeServices";
 import { listStores } from "@/lib/stores";
 import type { StoreView } from "@/lib/stores";
@@ -185,6 +187,14 @@ export default function Stores() {
             </div>
           </div>
         </GlassCard>
+      </section>
+
+      <section className="mt-16">
+        <StorePlanCards />
+      </section>
+
+      <section className="mt-16">
+        <BonusLadder />
       </section>
     </div>
   );

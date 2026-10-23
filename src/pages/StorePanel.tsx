@@ -6,6 +6,7 @@ import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
 import NeoTile from "@/components/ui/NeoTile";
 import Spinner from "@/components/ui/Spinner";
+import OwnerEconomy from "@/components/stores/OwnerEconomy";
 import ServiceGrid from "@/components/stores/ServiceGrid";
 import { joinAsAffiliate, listAffiliates, listMembers, listMyStores, setStoreService, storeServiceState } from "@/lib/stores";
 import type { AffiliateView, MemberView, StoreView } from "@/lib/stores";
@@ -151,6 +152,10 @@ export default function StorePanel() {
       </div>
 
       {error ? <p className="mt-4 text-sm text-coral-400">{error}</p> : null}
+
+      <section className="mt-6">
+        <OwnerEconomy store={active} />
+      </section>
 
       <section className="mt-10">
         <div className="flex flex-wrap items-center justify-between gap-3">

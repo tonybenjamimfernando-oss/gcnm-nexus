@@ -10,6 +10,8 @@ import ListingCard from "@/components/listings/ListingCard";
 import { getStoreBySlug, joinAsAffiliate, listStoreListings, storeLocation } from "@/lib/stores";
 import type { StoreView } from "@/lib/stores";
 import type { ListingView } from "@/lib/api";
+import { AFFILIATE_LEVELS, firstMonthBonus } from "@/lib/economy";
+import { formatMoney } from "@/lib/format";
 import { serviceLabel, tierLabel } from "@/lib/storeServices";
 import { useSession } from "@/lib/session";
 
@@ -210,7 +212,9 @@ export default function StoreDetail() {
                   Traz vendas para esta loja e ganha {store.commission}% de comissao.
                 </h2>
                 <p className="mt-2 text-sm leading-6 text-haze-300">
-                  Gera o teu codigo, partilha o link e acompanha o desempenho. Cada loja define a sua propria comissao.
+                  Gera o teu codigo, partilha o link e acompanha o desempenho. A comissao sobe com as tuas lojas pagas ativas:{" "}
+                  {AFFILIATE_LEVELS.map(function show(level) { return level.rate + "%"; }).join(" / ")} — o primeiro mes de cada plano entra
+                  como bonus, a partir de {formatMoney(firstMonthBonus("pro"), "USD")}.
                 </p>
                 {code ? (
                   <p className="mt-3 inline-flex items-center gap-2 rounded-full border border-mint-400/40 bg-mint-400/10 px-3 py-1.5 text-xs font-semibold text-mint-400">
