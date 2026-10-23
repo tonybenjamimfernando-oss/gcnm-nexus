@@ -11,20 +11,20 @@ type Props = {
 export default function Hero({ stats, sample }: Props) {
   return (
     <section className="mx-auto max-w-7xl">
-      <div className="mx-auto max-w-3xl text-center">
-        <span className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-[11px] font-bold uppercase tracking-[0.22em] text-haze-300">
+      <div className="mx-auto max-w-4xl px-1 text-center">
+        <span className="glass inline-flex max-w-full items-center justify-center gap-2 rounded-full border border-emerald-200/20 bg-emerald-300/[0.06] px-3.5 py-2 text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-100 sm:px-4 sm:text-[11px] sm:tracking-[0.22em]">
           <Globe2 className="h-3.5 w-3.5 text-glow-400" />
-          Global commerce network map
+          O mercado global de FLOWEBUY
         </span>
-        <h1 className="mt-6 font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-white md:text-6xl">
+        <h1 className="mt-6 font-display text-[2.55rem] font-extrabold leading-[1.02] tracking-[-0.045em] text-white sm:text-5xl md:mt-7 md:text-6xl">
           O mercado global
-          <span className="block text-glow-400 neon">em camadas.</span>
+          <span className="neon mt-1 block text-emerald-300">em camadas.</span>
         </h1>
-        <p className="mx-auto mt-5 max-w-2xl text-sm leading-6 text-haze-300 md:text-base">
+        <p className="mx-auto mt-5 max-w-2xl text-[0.93rem] leading-7 text-slate-300 sm:text-base sm:leading-7">
           Compre, venda e negocie entre paises dentro de salas comerciais por sector: produtos, servicos e pedidos de
           compra no mesmo espaco, com precos na sua moeda e vendedores verificados.
         </p>
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <div className="mt-7 flex flex-col items-stretch justify-center gap-3 px-5 sm:mt-8 sm:flex-row sm:items-center sm:px-0">
           <GlowButton to="/salas" size="lg">
             Explorar as 12 salas
             <ArrowRight className="h-4 w-4" />
@@ -33,7 +33,7 @@ export default function Hero({ stats, sample }: Props) {
             Ver planos e precos
           </GlowButton>
         </div>
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-haze-500">
+        <div className="mx-auto mt-6 flex max-w-xl flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-slate-400 sm:gap-x-6">
           <span className="inline-flex items-center gap-2">
             <Sparkles className="h-3.5 w-3.5 text-glow-400" />
             {stats.currencies} moedas
@@ -46,7 +46,7 @@ export default function Hero({ stats, sample }: Props) {
         </div>
       </div>
 
-      <div className="mt-14">
+      <div className="mt-10 sm:mt-14">
         <FloatingLayers sample={sample} stats={stats} />
       </div>
     </section>
