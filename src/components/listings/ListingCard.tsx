@@ -19,6 +19,20 @@ export default function ListingCard({ item }: { item: ListingView }) {
   const saved = favorites.has(item.id);
   const dot = KIND_DOT[item.kind] || "#4d93ff";
 
+  function save() {
+    favorites.toggle({
+      id: item.id,
+      title: item.title,
+      cover: item.cover,
+      price: item.price,
+      currency: item.currency,
+      city: item.city,
+      country: item.country,
+      kind: item.kind,
+      savedAt: new Date().toISOString(),
+    });
+  }
+
   return (
     <motion.article
       whileHover={{ y: -6 }}
@@ -40,9 +54,7 @@ export default function ListingCard({ item }: { item: ListingView }) {
           </span>
           <button
             type="button"
-            onClick={function toggle() {
-              favorites.toggle(item.id);
-            }}
+            onClick={save}
             className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full border border-white/15 bg-ink-950/70 text-white backdrop-blur-md transition hover:border-glow-400/60"
             aria-label={saved ? "Remover dos guardados" : "Guardar anuncio"}
             title={saved ? "Remover dos guardados" : "Guardar"}
@@ -54,7 +66,10 @@ export default function ListingCard({ item }: { item: ListingView }) {
         <div className="p-4">
           <div className="flex items-center gap-2 text-[11px] text-haze-500">
             <MapPin className="h-3.5 w-3.5" />
-            <span className="truncate">{item.city || "Sem local"}{item.country ? " - " + item.country : ""}</span>
+            <span className="truncate">
+              {item.city || "Sem local"}
+              {item.country ? " - " + item.country : ""}
+            </span>
             <span className="ml-auto inline-flex shrink-0 items-center gap-1">
               <Eye className="h-3.5 w-3.5" />
               {formatNumber(item.views)}
