@@ -28,7 +28,7 @@ export default function AppShell() {
     <div className="relative min-h-screen overflow-x-hidden">
       <Aurora />
       <Navbar />
-      <main className="relative z-10 px-4 pt-24 pb-16 md:px-6 md:pt-32">
+      <main className="relative z-10 px-4 pt-[6.6rem] pb-24 md:px-6 md:pt-32 md:pb-16">
         <Outlet />
       </main>
       <Footer />
