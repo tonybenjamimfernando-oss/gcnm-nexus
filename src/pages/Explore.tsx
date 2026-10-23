@@ -7,6 +7,7 @@ import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
 import Spinner from "@/components/ui/Spinner";
 import ListingCard from "@/components/listings/ListingCard";
+import TrendingSidebar from "@/components/listings/TrendingSidebar";
 import ListingFilters from "@/components/listings/ListingFilters";
 import type { FilterPatch } from "@/components/listings/ListingFilters";
 import { listListings } from "@/lib/api";
@@ -273,51 +274,54 @@ export default function Explore() {
       ) : null}
 
       {!loading && !error && items.length > 0 ? (
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {items.map(function render(item) {
-            const isPicked = picked.indexOf(item.id) !== -1;
-            return (
-              <div key={item.id} className="flex flex-col gap-3">
-                <ListingCard item={item} />
-                {view === "compare" ? (
-                  <button
-                    type="button"
-                    onClick={function pick() {
-                      togglePick(item.id);
-                    }}
-                    className={cn(
-                      "inline-flex h-10 items-center justify-center gap-2 rounded-full border text-xs font-bold transition",
-                      isPicked
-                        ? "border-transparent bg-glow-500 text-white"
-                        : "border-white/10 bg-white/5 text-haze-300 hover:text-white",
-                    )}
-                  >
-                    {isPicked ? <Check className="h-4 w-4" /> : null}
-                    {isPicked ? "Na comparacao" : "Comparar"}
-                  </button>
-                ) : (
-                  <div className="flex items-center justify-between text-[11px] text-haze-500">
-                    <span className="inline-flex items-center gap-1">
-                      <Eye className="h-3.5 w-3.5" />
-                      {formatNumber(item.views)} visualizacoes
-                    </span>
-                    {item.ownerVerified ? (
-                      <span className="inline-flex items-center gap-1 text-mint-400">
-                        <ShieldCheck className="h-3.5 w-3.5" />
-                        Verificado
+        <div className="mt-6 grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_300px]">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {items.map(function render(item) {
+              const isPicked = picked.indexOf(item.id) !== -1;
+              return (
+                <div key={item.id} className="flex flex-col gap-3">
+                  <ListingCard item={item} />
+                  {view === "compare" ? (
+                    <button
+                      type="button"
+                      onClick={function pick() {
+                        togglePick(item.id);
+                      }}
+                      className={cn(
+                        "inline-flex h-10 items-center justify-center gap-2 rounded-full border text-xs font-bold transition",
+                        isPicked
+                          ? "border-transparent bg-glow-500 text-white"
+                          : "border-white/10 bg-white/5 text-haze-300 hover:text-white",
+                      )}
+                    >
+                      {isPicked ? <Check className="h-4 w-4" /> : null}
+                      {isPicked ? "Na comparacao" : "Comparar"}
+                    </button>
+                  ) : (
+                    <div className="flex items-center justify-between text-[11px] text-haze-500">
+                      <span className="inline-flex items-center gap-1">
+                        <Eye className="h-3.5 w-3.5" />
+                        {formatNumber(item.views)} visualizacoes
                       </span>
-                    ) : null}
-                    {item.rating ? (
-                      <span className="inline-flex items-center gap-1 text-amber-400">
-                        <Star className="h-3.5 w-3.5 fill-amber-400" />
-                        {item.rating}
-                      </span>
-                    ) : null}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                      {item.ownerVerified ? (
+                        <span className="inline-flex items-center gap-1 text-mint-400">
+                          <ShieldCheck className="h-3.5 w-3.5" />
+                          Verificado
+                        </span>
+                      ) : null}
+                      {item.rating ? (
+                        <span className="inline-flex items-center gap-1 text-amber-400">
+                          <Star className="h-3.5 w-3.5 fill-amber-400" />
+                          {item.rating}
+                        </span>
+                      ) : null}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <TrendingSidebar />
         </div>
       ) : null}
     </div>
