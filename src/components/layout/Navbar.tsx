@@ -71,13 +71,13 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
+        "market-header fixed inset-x-0 top-0 z-50 transition-all duration-300",
         scrolled ? "border-b border-white/10 bg-ink-950/75 backdrop-blur-2xl" : "border-b border-transparent",
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 md:h-20 md:px-6">
         <Link to="/" className="group flex shrink-0 items-center gap-2.5" aria-label="GCNM Nexus">
-          <span className="glass grid h-10 w-10 place-items-center rounded-2xl ring-1 ring-glow-400/40">
+          <span className="brand-orbit glass grid h-10 w-10 place-items-center rounded-2xl ring-1 ring-glow-400/40">
             <span className="h-3.5 w-3.5 rounded-full bg-glow-500 shadow-[0_0_18px_4px_rgba(45,123,253,0.65)]" />
           </span>
           <span className="leading-none">
@@ -102,7 +102,7 @@ export default function Navbar() {
                 onMouseLeave={function leave() {
                   setHovered(null);
                 }}
-                className="relative rounded-full px-3.5 py-2 text-sm font-semibold"
+                className={cn("relative rounded-full px-3.5 py-2 text-sm font-semibold", link.to === "/planos" ? "nav-pricing-link" : "")}
               >
                 {showPill ? (
                   <motion.span
@@ -128,7 +128,7 @@ export default function Navbar() {
             }}
             placeholder={t("nav.search")}
             aria-label="Pesquisar no mercado"
-            className="h-11 w-full rounded-full border border-white/10 bg-white/5 pl-10 pr-4 text-sm text-white outline-none backdrop-blur-xl placeholder:text-haze-500 focus:border-glow-400/60"
+            className="nav-search-input h-11 w-full rounded-full border border-white/10 bg-white/5 pl-10 pr-4 text-sm text-white outline-none backdrop-blur-xl placeholder:text-haze-500 focus:border-glow-400/60"
           />
         </form>
 
