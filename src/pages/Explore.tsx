@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Check, Eye, LayoutGrid, ShieldCheck, Star } from "lucide-react";
+import CosmicWormhole from "@/components/home/CosmicWormhole";
 import EmptyState from "@/components/ui/EmptyState";
 import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
@@ -179,6 +180,10 @@ export default function Explore() {
         resultCount={items.length}
         onChange={patch}
       />
+
+      <div className="mt-5">
+        <CosmicWormhole />
+      </div>
 
       {seller ? (
         <div className="mt-4">
