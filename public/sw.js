@@ -1,4 +1,4 @@
-const CACHE = "gcnm-nexus-v2";
+const CACHE = "gcnm-nexus-v3";
 const CACHE_PREFIX = "gcnm-nexus-";
 
 self.addEventListener("install", function install() {
