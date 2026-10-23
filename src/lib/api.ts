@@ -16,6 +16,8 @@ export type ListingView = {
   currency: string;
   city: string | null;
   country: string | null;
+  latitude: number | null;
+  longitude: number | null;
   images: string[];
   cover: string;
   brand: string | null;
@@ -107,6 +109,8 @@ function toView(row: ListingRow, profiles: Map<string, ProfileRow>, reviews: Map
     currency: row.currency || BASE_CURRENCY,
     city: row.city,
     country: row.country,
+    latitude: row.latitude ?? null,
+    longitude: row.longitude ?? null,
     images,
     cover: images[0],
     brand: row.brand,
@@ -404,6 +408,8 @@ export type ListingDraft = {
   currency: string;
   city: string | null;
   country: string | null;
+  latitude: number | null;
+  longitude: number | null;
   images: string[];
   features: string | null;
   brand: string | null;
@@ -428,6 +434,8 @@ type DraftRow = {
   currency: string;
   city: string | null;
   country: string | null;
+  latitude: number | null;
+  longitude: number | null;
   features: string | null;
   brand: string | null;
   condition: string | null;
@@ -457,6 +465,8 @@ function rowFromDraft(ownerId: string, draft: ListingDraft, status: string): Dra
     currency: draft.currency,
     city: draft.city,
     country: draft.country,
+    latitude: draft.latitude,
+    longitude: draft.longitude,
     features: draft.features,
     brand: draft.brand,
     condition: draft.condition,

@@ -33,6 +33,8 @@ type FormState = {
   currency: string;
   city: string;
   country: string;
+  latitude: string;
+  longitude: string;
   brand: string;
   condition: string;
   warranty: string;
@@ -54,6 +56,8 @@ const EMPTY: FormState = {
   currency: "EUR",
   city: "",
   country: "",
+  latitude: "",
+  longitude: "",
   brand: "",
   condition: "novo",
   warranty: "",
@@ -121,6 +125,8 @@ export default function NewListing() {
           currency: item.currency,
           city: item.city || "",
           country: item.country || "",
+          latitude: item.latitude === null ? "" : String(item.latitude),
+          longitude: item.longitude === null ? "" : String(item.longitude),
           brand: item.brand || "",
           condition: item.condition || "novo",
           warranty: item.warranty || "",
@@ -180,6 +186,8 @@ export default function NewListing() {
       currency: draft.currency,
       city: draft.city.trim() || null,
       country: draft.country.trim() || null,
+      latitude: numberOrNull(draft.latitude),
+      longitude: numberOrNull(draft.longitude),
       images: images,
       features: features.length > 0 ? features : null,
       brand: draft.brand.trim() || null,
@@ -436,6 +444,26 @@ export default function NewListing() {
                 set("country", event.target.value);
               }}
               placeholder="Ex: Mocambique"
+              className={INPUT}
+            />
+          </Field>
+          <Field label="Latitude (opcional)">
+            <input
+              value={draft.latitude}
+              onChange={function change(event) {
+                set("latitude", event.target.value);
+              }}
+              placeholder="Ex: -25.9692"
+              className={INPUT}
+            />
+          </Field>
+          <Field label="Longitude (opcional)">
+            <input
+              value={draft.longitude}
+              onChange={function change(event) {
+                set("longitude", event.target.value);
+              }}
+              placeholder="Ex: 32.5732"
               className={INPUT}
             />
           </Field>

@@ -2,22 +2,26 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Megaphone, Menu, Search, UserRound, X } from "lucide-react";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 import CurrencySwitcher from "@/components/ui/CurrencySwitcher";
 import GlowButton from "@/components/ui/GlowButton";
 import { useSession } from "@/lib/session";
+import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/cn";
 
 const LINKS = [
-  { to: "/", label: "Inicio" },
-  { to: "/explorar", label: "Explorar" },
-  { to: "/salas", label: "Salas" },
-  { to: "/planos", label: "Planos" },
+  { to: "/", key: "nav.home" },
+  { to: "/explorar", key: "nav.explore" },
+  { to: "/salas", key: "nav.rooms" },
+  { to: "/mapa", key: "nav.map" },
+  { to: "/planos", key: "nav.plans" },
 ];
 
 export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useSession();
+  const { t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [hovered, setHovered] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
@@ -104,7 +108,7 @@ export default function Navbar() {
                   />
                 ) : null}
                 <span className={cn("relative z-10 transition-colors", isActive ? "text-white" : "text-haze-300")}>
-                  {link.label}
+                  {t(link.key)}
                 </span>
               </Link>
             );
@@ -118,26 +122,27 @@ export default function Navbar() {
             onChange={function change(event) {
               setTerm(event.target.value);
             }}
-            placeholder="O que procura hoje?"
+            placeholder={t("nav.search")}
             aria-label="Pesquisar no mercado"
             className="h-11 w-full rounded-full border border-white/10 bg-white/5 pl-10 pr-4 text-sm text-white outline-none backdrop-blur-xl placeholder:text-haze-500 focus:border-glow-400/60"
           />
         </form>
 
         <div className="ml-auto flex items-center gap-2 lg:ml-2">
-          <div className="hidden sm:block">
+          <div className="hidden items-center gap-2 sm:flex">
+            <LanguageSwitcher />
             <CurrencySwitcher />
           </div>
           <GlowButton to={user ? "/painel" : "/entrar"} variant="glass" size="sm" className="hidden sm:inline-flex">
             <UserRound className="h-4 w-4" />
-            {user ? "Painel" : "Entrar"}
+            {user ? t("nav.dashboard") : t("nav.signin")}
           </GlowButton>
           <GlowButton to="/publicar" size="sm" className="hidden md:inline-flex">
             <Megaphone className="h-4 w-4" />
-            Publicar
+            {t("nav.publish")}
           </GlowButton>
           <GlowButton to="/salas" size="sm" className="hidden md:inline-flex">
-            Explorar salas
+            {t("nav.exploreRooms")}
           </GlowButton>
           <button
             type="button"
@@ -163,7 +168,7 @@ export default function Navbar() {
               onChange={function change(event) {
                 setTerm(event.target.value);
               }}
-              placeholder="Pesquisar"
+              placeholder={t("nav.searchShort")}
               aria-label="Pesquisar"
               className="h-11 w-full rounded-full border border-white/10 bg-white/5 pl-10 pr-4 text-sm text-white outline-none placeholder:text-haze-500 focus:border-glow-400/60"
             />
@@ -176,7 +181,7 @@ export default function Navbar() {
                   to={link.to}
                   className="rounded-xl px-3 py-3 text-sm font-semibold text-haze-300 hover:bg-white/5 hover:text-white"
                 >
-                  {link.label}
+                  {t(link.key)}
                 </Link>
               );
             })}
@@ -184,19 +189,20 @@ export default function Navbar() {
               to={user ? "/painel" : "/entrar"}
               className="rounded-xl px-3 py-3 text-sm font-semibold text-haze-300 hover:bg-white/5 hover:text-white"
             >
-              {user ? "Painel" : "Entrar"}
+              {user ? t("nav.dashboard") : t("nav.signin")}
             </Link>
             <Link
               to="/publicar"
               className="rounded-xl px-3 py-3 text-sm font-semibold text-haze-300 hover:bg-white/5 hover:text-white"
             >
-              Publicar anuncio
+              {t("nav.publishListing")}
             </Link>
           </nav>
           <div className="mt-4 flex items-center justify-between gap-3">
+            <LanguageSwitcher />
             <CurrencySwitcher />
             <GlowButton to="/salas" size="sm">
-              Explorar salas
+              {t("nav.exploreRooms")}
             </GlowButton>
           </div>
         </div>

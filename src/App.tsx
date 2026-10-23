@@ -4,6 +4,7 @@ import Explore from "@/pages/Explore";
 import Home from "@/pages/Home";
 import Admin from "@/pages/Admin";
 import ListingDetail from "@/pages/ListingDetail";
+import MapPage from "@/pages/MapPage";
 import Messages from "@/pages/Messages";
 import NewListing from "@/pages/NewListing";
 import Proposals from "@/pages/Proposals";
@@ -15,6 +16,7 @@ import Rooms from "@/pages/Rooms";
 import SignIn from "@/pages/SignIn";
 import { CurrencyProvider } from "@/lib/currency";
 import { FavoritesProvider } from "@/lib/favorites";
+import { LanguageProvider } from "@/lib/i18n";
 import { SessionProvider } from "@/lib/session";
 
 export default function App() {
@@ -23,6 +25,7 @@ export default function App() {
       <SessionProvider>
         <CurrencyProvider>
           <FavoritesProvider>
+            <LanguageProvider>
             <Routes>
               <Route element={<AppShell />}>
                 <Route path="/" element={<Home />} />
@@ -34,12 +37,14 @@ export default function App() {
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/salas" element={<Rooms />} />
                 <Route path="/salas/:slug" element={<RoomDetail />} />
+                <Route path="/mapa" element={<MapPage />} />
                 <Route path="/planos" element={<Plans />} />
                 <Route path="/entrar" element={<SignIn />} />
                 <Route path="/painel" element={<Panel />} />
                 <Route path="*" element={<NotFound />} />
               </Route>
             </Routes>
+            </LanguageProvider>
           </FavoritesProvider>
         </CurrencyProvider>
       </SessionProvider>

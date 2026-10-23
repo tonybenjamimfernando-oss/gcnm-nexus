@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Bookmark, BookmarkCheck, Check, Eye, MapPin, MessageCircle, Send, Share2, ShieldCheck, Star, Store } from "lucide-react";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { ArrowLeft, Bookmark, BookmarkCheck, Check, Eye, MapPin, MessageCircle, Send, Share2, ShieldCheck, ShoppingBag, Star, Store } from "lucide-react";
 import EmptyState from "@/components/ui/EmptyState";
 import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
 import Spinner from "@/components/ui/Spinner";
 import ListingGallery from "@/components/listings/ListingGallery";
+import MiniMap from "@/components/listings/MiniMap";
 import { getListing, listReviews, roomForListing } from "@/lib/api";
 import type { ListingView, ReviewView } from "@/lib/api";
 import { useCurrency } from "@/lib/currency";
@@ -13,6 +14,7 @@ import { useFavorites } from "@/lib/favorites";
 import { accountTypeLabel, formatDate, formatMoney, formatMonthYear, formatNumber, listingKindLabel } from "@/lib/format";
 import { findRoom } from "@/lib/rooms";
 import { startConversation } from "@/lib/messaging";
+import { startCheckout } from "@/lib/payments";
 import { useSession } from "@/lib/session";
 
 export default function ListingDetail() {
@@ -25,8 +27,11 @@ export default function ListingDetail() {
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const [contactError, setContactError] = useState<string | null>(null);
+  const [buying, setBuying] = useState(false);
+  const [buyError, setBuyError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { user } = useSession();
+  const paid = useSearchParams()[0].get("pago") === "1";
   const isOwner = Boolean(user && item && user.id === item.ownerId);
 
   async function contact() {
@@ -40,6 +45,25 @@ export default function ListingDetail() {
       navigate("/mensagens/" + conversationId);
     } catch (problem) {
       setContactError(problem instanceof Error ? problem.message : "Nao foi possivel abrir a conversa.");
+    }
+  }
+
+  async function buy() {
+    if (!item || buying) return;
+    if (!user) {
+      navigate("/entrar?next=/anuncio/" + item.id);
+      return;
+    }
+    setBuying(true);
+    setBuyError(null);
+    try {
+      const url = await startCheckout(item.id);
+      window.location.href = url;
+      return;
+    } catch (problem) {
+      setBuyError(problem instanceof Error ? problem.message : "Nao foi possivel iniciar o pagamento.");
+    } finally {
+      setBuying(false);
     }
   }
 
@@ -156,6 +180,12 @@ export default function ListingDetail() {
         Voltar as ofertas
       </Link>
 
+      {paid ? (
+        <div className="mt-5 rounded-2xl border border-mint-400/30 bg-mint-400/10 px-4 py-3 text-sm font-semibold text-mint-400">
+          Pagamento confirmado. O vendedor recebe a encomenda e entra em contacto para combinar a entrega.
+        </div>
+      ) : null}
+
       <div className="mt-5 grid gap-6 lg:grid-cols-5">
         <div className="lg:col-span-3">
           <ListingGallery images={item.images} title={item.title} />
@@ -232,6 +262,20 @@ export default function ListingDetail() {
               )}
             </div>
           </GlassCard>
+
+          {item.latitude !== null && item.longitude !== null ? (
+            <GlassCard className="mt-4 p-5">
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="font-display text-lg font-bold text-white">Localizacao</h2>
+                <Link to="/mapa" className="text-xs font-bold text-glow-400 transition hover:text-white">
+                  Ver no mapa
+                </Link>
+              </div>
+              <div className="mt-3 overflow-hidden rounded-2xl border border-white/10">
+                <MiniMap latitude={item.latitude} longitude={item.longitude} />
+              </div>
+            </GlassCard>
+          ) : null}
         </div>
 
         <div className="lg:col-span-2">
@@ -296,6 +340,12 @@ export default function ListingDetail() {
                   <Store className="h-4 w-4" />
                   Ver mais deste vendedor
                 </GlowButton>
+                {!isOwner && (item.kind === "product" || item.kind === "service") && item.price !== null ? (
+                  <GlowButton onClick={buy} variant="primary" className="w-full">
+                    <ShoppingBag className="h-4 w-4" />
+                    {buying ? "A abrir pagamento..." : "Comprar agora"}
+                  </GlowButton>
+                ) : null}
                 {!isOwner && item.kind !== "request" ? (
                   <GlowButton onClick={contact} variant="glass" className="w-full">
                     <MessageCircle className="h-4 w-4" />
@@ -321,6 +371,9 @@ export default function ListingDetail() {
                 ) : null}
                 {contactError ? (
                   <p className="text-xs text-amber-400">{contactError}</p>
+                ) : null}
+                {buyError ? (
+                  <p className="text-xs text-amber-400">{buyError}</p>
                 ) : null}
               </div>
 

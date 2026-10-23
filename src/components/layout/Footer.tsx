@@ -1,26 +1,30 @@
 import { Link } from "react-router-dom";
 import { Github, Globe2, ShieldCheck } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
 
 const COLUMNS = [
   {
-    title: "Mercado",
+    titleKey: "footer.market",
     links: [
-      { label: "Explorar ofertas", to: "/explorar" },
-      { label: "Todas as salas", to: "/salas" },
-      { label: "Planos e precos", to: "/planos" },
+      { key: "footer.exploreOffers", to: "/explorar" },
+      { key: "footer.allRooms", to: "/salas" },
+      { key: "footer.map", to: "/mapa" },
+      { key: "footer.plansPrices", to: "/planos" },
     ],
   },
   {
-    title: "Conta",
+    titleKey: "footer.account",
     links: [
-      { label: "Entrar", to: "/entrar" },
-      { label: "Painel", to: "/painel" },
-      { label: "Guardados", to: "/painel" },
+      { key: "footer.signin", to: "/entrar" },
+      { key: "footer.dashboard", to: "/painel" },
+      { key: "footer.saved", to: "/painel" },
     ],
   },
 ];
 
 export default function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer className="relative z-10 mt-16 border-t border-white/10 bg-ink-950/70">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 pb-28 pt-14 md:grid-cols-4 md:px-6 md:pb-14">
@@ -34,23 +38,22 @@ export default function Footer() {
             </span>
           </div>
           <p className="mt-4 max-w-md text-sm leading-6 text-haze-300">
-            A rede global de comercio em camadas: 12 salas comerciais, ofertas de produtos, servicos e pedidos de
-            compra, com precos na moeda de cada visitante.
+            {t("footer.about")}
           </p>
           <p className="mt-4 inline-flex items-center gap-2 text-xs text-haze-500">
             <ShieldCheck className="h-4 w-4 text-mint-400" />
-            Vendedores verificados e avaliacoes publicas
+            {t("footer.trust")}
           </p>
         </div>
         {COLUMNS.map(function render(column) {
           return (
-            <div key={column.title}>
-              <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-haze-500">{column.title}</p>
+            <div key={column.titleKey}>
+              <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-haze-500">{t(column.titleKey)}</p>
               <div className="mt-4 grid gap-2.5">
                 {column.links.map(function renderLink(link) {
                   return (
-                    <Link key={link.label} to={link.to} className="text-sm text-haze-300 transition hover:text-white">
-                      {link.label}
+                    <Link key={link.key} to={link.to} className="text-sm text-haze-300 transition hover:text-white">
+                      {t(link.key)}
                     </Link>
                   );
                 })}
@@ -69,7 +72,7 @@ export default function Footer() {
             className="inline-flex items-center gap-2 transition hover:text-white"
           >
             <Github className="h-4 w-4" />
-            Codigo e documentacao
+            {t("footer.code")}
           </a>
         </div>
       </div>
