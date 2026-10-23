@@ -10,7 +10,9 @@ import ListingCard from "@/components/listings/ListingCard";
 import { getStoreBySlug, joinAsAffiliate, listStoreListings, storeLocation } from "@/lib/stores";
 import type { StoreView } from "@/lib/stores";
 import type { ListingView } from "@/lib/api";
+import StoreSeo from "@/components/stores/StoreSeo";
 import { AFFILIATE_LEVELS, firstMonthBonus } from "@/lib/economy";
+import { storeBrief } from "@/lib/marketing";
 import { formatMoney } from "@/lib/format";
 import { serviceLabel, tierLabel } from "@/lib/storeServices";
 import { useSession } from "@/lib/session";
@@ -121,7 +123,7 @@ export default function StoreDetail() {
             </div>
             <div className="mt-4 flex flex-wrap items-center gap-2 text-[11px] text-haze-500">
               {store.category ? <span className="rounded-full border border-white/10 px-3 py-1 font-semibold text-haze-300">{store.category}</span> : null}
-              <span className="rounded-full border border-white/10 px-3 py-1 font-semibold text-haze-300">{tierLabel(store.tier)}</span>
+              <><StoreSeo brief={storeBrief({ name: store.name, slug: store.slug, city: store.city, category: store.category, tagline: store.tagline, tier: store.tier, url: window.location.origin + "/loja/" + store.slug })} storeId={store.id} /><span className="rounded-full border border-white/10 px-3 py-1 font-semibold text-haze-300">{tierLabel(store.tier)}</span></>
               <span className="inline-flex items-center gap-1">
                 <MapPin className="h-3.5 w-3.5" />
                 {storeLocation(store) || "Global"}

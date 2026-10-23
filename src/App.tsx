@@ -5,6 +5,7 @@ import Home from "@/pages/Home";
 import Admin from "@/pages/Admin";
 import ListingDetail from "@/pages/ListingDetail";
 import MapPage from "@/pages/MapPage";
+import Marketing from "@/pages/Marketing";
 import Messages from "@/pages/Messages";
 import NewListing from "@/pages/NewListing";
 import Proposals from "@/pages/Proposals";
@@ -46,6 +47,7 @@ export default function App() {
                 <Route path="/lojas/painel" element={<StorePanel />} />
                 <Route path="/loja/:slug" element={<StoreDetail />} />
                 <Route path="/mapa" element={<MapPage />} />
+                <Route path="/marketing" element={<Marketing />} />
                 <Route path="/planos" element={<Plans />} />
                 <Route path="/entrar" element={<SignIn />} />
                 <Route path="/painel" element={<Panel />} />

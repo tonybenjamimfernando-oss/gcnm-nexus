@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { CreditCard, Home, LayoutGrid, MapPin, Search, UserRound, Store } from "lucide-react";
+import { Megaphone, CreditCard, Home, LayoutGrid, MapPin, Search, UserRound, Store } from "lucide-react";
 import { useSession } from "@/lib/session";
 import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/cn";
@@ -15,6 +15,7 @@ export default function MobileDock() {
     { to: "/explorar", label: t("nav.explore"), icon: Search },
     { to: "/salas", label: t("nav.rooms"), icon: LayoutGrid },
     { to: "/lojas", label: t("nav.stores"), icon: Store },
+    { to: "/marketing", label: t("nav.marketing"), icon: Megaphone },
     { to: "/mapa", label: t("nav.map"), icon: MapPin },
     { to: "/planos", label: t("nav.plans"), icon: CreditCard },
     { to: user ? "/painel" : "/entrar", label: user ? t("nav.dashboard") : t("nav.signin"), icon: UserRound },

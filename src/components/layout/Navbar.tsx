@@ -15,6 +15,7 @@ const LINKS = [
   { to: "/explorar", key: "nav.explore" },
   { to: "/salas", key: "nav.rooms" },
   { to: "/lojas", key: "nav.stores" },
+  { to: "/marketing", key: "nav.marketing" },
   { to: "/mapa", key: "nav.map" },
   { to: "/planos", key: "nav.plans" },
 ];
