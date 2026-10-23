@@ -1,4 +1,5 @@
 import ListingCard from "@/components/listings/ListingCard";
+import TrendingSidebar from "@/components/listings/TrendingSidebar";
 import SectionHeading from "@/components/ui/SectionHeading";
 import GlowButton from "@/components/ui/GlowButton";
 import Spinner from "@/components/ui/Spinner";
@@ -38,10 +39,13 @@ export default function Spotlight({ items, loading }: Props) {
         </div>
       ) : null}
       {!loading && items.length > 0 ? (
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {items.map(function render(item) {
-            return <ListingCard key={item.id} item={item} />;
-          })}
+        <div className="mt-8 grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_300px]">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {items.map(function render(item) {
+              return <ListingCard key={item.id} item={item} />;
+            })}
+          </div>
+          <TrendingSidebar />
         </div>
       ) : null}
     </section>
