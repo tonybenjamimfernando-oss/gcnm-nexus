@@ -212,7 +212,7 @@ export default function NewListing() {
     setError(null);
     try {
       if (editId.length > 0) {
-        await updateListing(editId, user ? user.id : "", buildDraft());
+        await updateListing(editId, user ? user.id : "", buildDraft(), status);
         navigate("/painel", { replace: true });
         return;
       }
@@ -228,8 +228,8 @@ export default function NewListing() {
 
   async function upload(file: File) {
     setError(null);
-    if (!supabase) {
-      setError("O carregamento de ficheiros requer a ligacao ao Supabase. Cole um endereco de imagem por agora.");
+    if (!supabase || !user) {
+      setError("O carregamento de ficheiros requer a sessao ligada ao Supabase. Cole um endereco de imagem por agora.");
       return;
     }
     const allowed = ["image/png", "image/jpeg", "image/webp"];
@@ -244,7 +244,7 @@ export default function NewListing() {
     setBusy(true);
     try {
       const ext = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
-      const path = "listings/" + crypto.randomUUID() + "." + ext;
+      const path = user.id + "/" + crypto.randomUUID() + "." + ext;
       const result = await supabase.storage.from("media").upload(path, file);
       if (result.error) {
         setError(result.error.message);

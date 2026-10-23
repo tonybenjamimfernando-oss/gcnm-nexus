@@ -20,35 +20,34 @@ Modulos em cada sala: montra, catalogo de produtos, pedidos de compra, servicos 
 parcerias, comparador de ofertas, tendencias de preco, logistica e entrega, pagamento e moedas, verificacao e
 confianca.
 
-## Fase 1 - Publicacao de anuncios
+## Fase 1 - Publicacao de anuncios (concluida)
 
-- Formulario completo por tipo de oferta, com variantes, condicao, garantia e prazo.
-- Carregamento de imagens para o bucket media, com limite de tamanho e tipo.
-- Rascunho, envio para revisao e edicao do anuncio publicado.
+- Formulario completo por tipo de oferta, com variantes, condicao, garantia, prazo, quantidade e coordenadas.
+- Imagens no bucket publico media, com limite de 5 MB e apenas PNG, JPG ou WEBP, guardadas por pasta do utilizador.
+- Rascunho, envio para revisao e edicao do anuncio, com validacao antes de guardar.
 
-## Fase 2 - Mensagens e propostas
+## Fase 2 - Mensagens e propostas (concluida na base)
 
-- Conversas por anuncio (conversations e messages), com aviso de novas mensagens.
-- Propostas de fornecedores aos pedidos de compra (proposals), com comparacao de precos e prazos.
+- Conversas por anuncio, com lista de conversas e historico de mensagens.
+- Propostas de fornecedores aos pedidos de compra, com comparacao de precos e prazos.
+- Falta: aviso de novas mensagens na navegacao.
 
-## Fase 3 - Pagamentos
+## Fase 3 - Pagamentos (em curso)
 
-- Conta no provedor, moedas de cobranca e metodos por pais.
-- Checkout no servidor, webhooks, fatura e ativacao automatica do plano.
-- Destaque de anuncios e comissao de afiliacao (affiliate_links).
+- Feito: funcoes create-checkout e stripe-webhook, registo de encomendas, cobranca na moeda do anuncio e erro claro quando o Stripe ainda nao esta configurado.
+- Falta: conta e chaves do Stripe, moedas de cobranca e metodos por pais, fatura, ativacao automatica do plano, destaques e comissao de afiliacao.
 
-## Fase 4 - Administracao e moderacao
+## Fase 4 - Administracao e moderacao (em curso)
 
-- Painel com papeis (user_roles), fila de revisao de anuncios e avaliacoes.
-- Denuncias de avaliacoes (review_reports) e historico de decisoes.
+- Feito: pagina de administracao com fila de moderacao dos anuncios, denuncias de avaliacoes e papeis de utilizador.
+- Falta: historico de decisoes e avisos aos autores.
 
-## Fase 5 - Mapa e alcance
+## Fase 5 - Mapa e alcance (em curso)
 
-- Mapa das ofertas com latitude e longitude ja guardados na base.
-- Filtro por distancia, regiao e rota de transporte.
+- Feito: latitude e longitude guardadas na base, pagina de mapa e mapa em miniatura na pagina do anuncio.
+- Falta: filtro por distancia, regiao e rota de transporte.
 
-## Fase 6 - Produto e operacao
+## Fase 6 - Produto e operacao (em curso)
 
-- Aplicacao instalavel, multi-idioma e melhorias de SEO por sala.
-- Guardados no servidor (requer nova tabela e migracao com RLS).
-- Testes end-to-end das jornadas principais e monitorizacao de erros.
+- Feito: aplicacao instalavel (manifesto e service worker), multi-idioma na navegacao e modo demo sem configuracao.
+- Falta: guardados no servidor (nova tabela e migracao com RLS), SEO por sala, testes end-to-end das jornadas principais e monitorizacao de erros.

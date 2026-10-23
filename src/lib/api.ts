@@ -494,9 +494,9 @@ export async function createListing(userId: string, draft: ListingDraft, status:
   return result.data.id as string;
 }
 
-export async function updateListing(id: string, ownerId: string, draft: ListingDraft): Promise<void> {
+export async function updateListing(id: string, ownerId: string, draft: ListingDraft, status: string): Promise<void> {
   if (!isSupabaseReady || !supabase) throw new Error(OFFLINE_MESSAGE);
-  const row = rowFromDraft(ownerId, draft, "pending");
+  const row = rowFromDraft(ownerId, draft, status);
   const result = await supabase.from("listings").update(row).eq("id", id).eq("owner_id", ownerId);
   if (result.error) throw new Error(result.error.message);
 }

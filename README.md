@@ -8,10 +8,16 @@ Versao melhorada do GCNM (Global Commerce Network Map): a mesma proposta e o mes
 - Navegacao com efeitos independentes e interdependentes (pilula ativa partilhada e brilho proprio de cada item).
 - Painel inicial com composicao em camadas flutuantes e cartoes de vidro.
 - Explorar: pesquisa, filtros por sala e tipo, ordenacao, vista de comparacao.
-- Anuncio: galeria, metricas, vendedor, favoritos e partilha.
+- Anuncio: galeria, mapa, metricas, vendedor, avaliacoes, favoritos, partilha, mensagem e compra.
+- Publicar: formulario por tipo de oferta (produto, servico, pedido de compra, oportunidade), imagens no bucket media, rascunho, envio para revisao e edicao.
+- Mensagens: conversas por anuncio, com lista de conversas e envio de mensagens.
+- Propostas: fornecedores respondem aos pedidos de compra, com comparacao de precos e prazos.
+- Administracao: fila de moderacao dos anuncios e das denuncias de avaliacoes, com papeis de utilizador.
+- Mapa: ofertas com latitude e longitude, mapa em miniatura na pagina do anuncio.
 - 12 salas comerciais, cada uma com 10 modulos funcionais.
 - Planos e precos em todas as moedas ISO, com taxas de referencia.
-- Entrar e Painel ligados ao Supabase (o mesmo esquema de dados do GCNM).
+- Conta (entrar, criar, ligacao por email) e painel com perfil, guardados e anuncios.
+- Aplicacao instalavel (PWA), com manifesto e service worker.
 - Modo demo: sem variaveis de ambiente, a interface abre com dados de exemplo.
 
 ## Arranque
@@ -19,18 +25,39 @@ Versao melhorada do GCNM (Global Commerce Network Map): a mesma proposta e o mes
     npm install
     npm run dev
 
-Variaveis de ambiente: copie .env.example para .env e preencha
+## Variaveis de ambiente
+
+Copie .env.example para .env e preencha:
 
     VITE_SUPABASE_URL=
     VITE_SUPABASE_ANON_KEY=
 
 Sao valores publicos. A chave de servico nunca entra no frontend.
 
+## Base de dados
+
+As migracoes em `supabase/migrations` criam as tabelas, as politicas de acesso (RLS) e o bucket publico `media` das imagens (limite de 5 MB, apenas PNG, JPG ou WEBP). Aplique-as com:
+
+    supabase db push
+
+Num projeto ja existente, o SQL editor tambem aceita os ficheiros um a um. Cada imagem fica em `media/<id do utilizador>/...`, e so o proprio utilizador pode escrever na sua pasta.
+
+## Pagamentos
+
+O checkout e a confirmacao correm nas funcoes `supabase/functions/create-checkout` e `supabase/functions/stripe-webhook`. Configure os secrets e publique:
+
+    supabase secrets set STRIPE_SECRET_KEY=sk_... STRIPE_WEBHOOK_SECRET=whsec_... SITE_URL=https://o-seu-dominio
+    supabase functions deploy create-checkout
+    supabase functions deploy stripe-webhook
+
+No Stripe, aponte o webhook para `https://<projeto>.supabase.co/functions/v1/stripe-webhook`. Sem `STRIPE_SECRET_KEY`, o botao de compra devolve uma mensagem clara e nenhuma encomenda e criada.
+
 ## Estrutura
 
-    src/lib          dados, moedas, salas, planos, ligacao ao Supabase
+    src/lib          dados, moedas, salas, planos, mensagens, ligacao ao Supabase
     src/components   ui, layout, home, listings, rooms
     src/pages        rotas da aplicacao
+    supabase         migracoes SQL e funcoes de servidor
     docs             arquitetura, sistema de design, roteiro
 
 ## Documentos
@@ -41,4 +68,4 @@ Sao valores publicos. A chave de servico nunca entra no frontend.
 
 ## Fases seguintes
 
-Pagamentos (Stripe), mensagens e propostas, publicacao de anuncios, administracao e moderacao, mapa, PWA e multi-idioma. Ver docs/ROADMAP.md.
+Aviso de novas mensagens, destaques de anuncios e comissao de afiliacao, ativacao automatica do plano por pagamento, guardados no servidor (tabela e migracao com RLS), SEO por sala, testes end-to-end e monitorizacao de erros. Ver docs/ROADMAP.md.
