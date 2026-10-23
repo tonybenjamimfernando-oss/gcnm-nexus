@@ -55,6 +55,12 @@ export type ReviewRow = {
   created_at: string;
 };
 
+export const FEATURE_SEPARATOR = " | ";
+
+function features(list: string[]): string {
+  return list.join(FEATURE_SEPARATOR);
+}
+
 function shot(seed: string): string[] {
   return [
     "https://picsum.photos/seed/" + seed + "-a/1200/750",
@@ -66,7 +72,7 @@ function shot(seed: string): string[] {
 type Seed = Partial<ListingRow> & { id: string; title: string; kind: string; category: string; owner_id: string };
 
 function listing(seed: Seed): ListingRow {
-  const base: ListingRow = {
+  return {
     id: seed.id,
     title: seed.title,
     kind: seed.kind,
@@ -95,7 +101,6 @@ function listing(seed: Seed): ListingRow {
     created_at: seed.created_at || "2026-10-18T09:00:00Z",
     owner_id: seed.owner_id,
   };
-  return base;
 }
 
 export const DEMO_PROFILES: ProfileRow[] = [
@@ -197,11 +202,9 @@ export const DEMO_LISTINGS: ListingRow[] = [
     country: "Mocambique",
     stock: 2400,
     warranty: "Garantia de fabrico de 6 meses",
-    delivery: "Entrega em 48h (Grande Maputo)",
+    delivery: "Entrega em 48h no Grande Maputo",
     returns_policy: "Troca de lotes com defeito de fabrico",
-    features: "Classe 32.5
-Paletes de 40 sacos
-Descarga incluida no Grande Maputo",
+    features: features(["Classe 32.5", "Paletes de 40 sacos", "Descarga incluida no Grande Maputo"]),
     views: 1840,
     created_at: "2026-10-20T07:40:00Z",
     owner_id: "p-1",
@@ -212,7 +215,7 @@ Descarga incluida no Grande Maputo",
     kind: "product",
     category: "Energia",
     description:
-      "Painel fotovoltaico de 550W, eficiencia 21 por cento, garantia de 12 anos. Ideal para sistemas residenciais e bombagem solar.",
+      "Painel fotovoltaico de 550W com eficiencia de 21 por cento e garantia de 12 anos. Indicado para sistemas residenciais e bombagem solar.",
     price: 245,
     currency: "USD",
     brand: "Sunline",
@@ -222,10 +225,7 @@ Descarga incluida no Grande Maputo",
     stock: 480,
     warranty: "12 anos de garantia de producao",
     delivery: "Envio nacional em 3 a 5 dias",
-    features: "550W
-Monocristalino
-Garantia 12 anos
-Inclui cabos MC4",
+    features: features(["550W", "Monocristalino", "Garantia de 12 anos", "Inclui cabos MC4"]),
     views: 2210,
     created_at: "2026-10-19T11:15:00Z",
     owner_id: "p-2",
@@ -236,7 +236,7 @@ Inclui cabos MC4",
     kind: "product",
     category: "Energia",
     description:
-      "Gerador industrial 15 kVA, arrefecimento a agua, quadro automatico e tanque de 40 litros. Assistencia tecnica apos venda.",
+      "Gerador industrial de 15 kVA, arrefecimento a agua, quadro automatico e tanque de 40 litros. Assistencia tecnica apos venda.",
     price: 4800,
     currency: "USD",
     brand: "PowerTech",
@@ -246,9 +246,7 @@ Inclui cabos MC4",
     stock: 12,
     warranty: "2 anos com manutencao anual",
     delivery: "Levantamento local ou envio",
-    features: "15 kVA
-Arranque automatico
-Baixo ruido",
+    features: features(["15 kVA", "Arranque automatico", "Baixo ruido"]),
     views: 940,
     created_at: "2026-10-17T14:05:00Z",
     owner_id: "p-2",
@@ -259,7 +257,7 @@ Baixo ruido",
     kind: "product",
     category: "Agro",
     description:
-      "Trator 75 cv com cabine fechada, ar condicionado e preparacao para charrua e reboque. Revisao completa feita na oficina.",
+      "Trator de 75 cv com cabine fechada, ar condicionado e preparacao para charrua e reboque. Revisao completa feita na oficina.",
     price: 18500,
     currency: "USD",
     brand: "FieldPro",
@@ -269,9 +267,7 @@ Baixo ruido",
     quantity: 3,
     warranty: "6 meses no motor",
     delivery: "Transporte por conta do comprador",
-    features: "75 cv
-Cabine com ar condicionado
-Revisao completa",
+    features: features(["75 cv", "Cabine com ar condicionado", "Revisao completa"]),
     views: 1310,
     created_at: "2026-10-15T08:30:00Z",
     owner_id: "p-4",
@@ -292,9 +288,7 @@ Revisao completa",
     stock: 600,
     warranty: "Garantia de germinacao certificada",
     delivery: "Entrega combinada com cooperativas",
-    features: "Sacos de 25kg
-Boletim de analise
-Assistencia tecnica incluida",
+    features: features(["Sacos de 25kg", "Boletim de analise", "Assistencia tecnica incluida"]),
     views: 705,
     created_at: "2026-10-14T09:20:00Z",
     owner_id: "p-4",
@@ -305,7 +299,7 @@ Assistencia tecnica incluida",
     kind: "request",
     category: "Moda e Textil",
     description:
-      "Procura-se confeccao de 500 uniformes (camisa e calca) com bordado de emblema. Entrega faseada em duas remessas iguais.",
+      "Procura-se confeccao de 500 uniformes, camisa e calca, com bordado de emblema. Entrega faseada em duas remessas iguais.",
     price: null,
     currency: "USD",
     budget_max: 9500,
@@ -313,9 +307,7 @@ Assistencia tecnica incluida",
     city: "Maputo",
     country: "Mocambique",
     quantity: 500,
-    features: "500 unidades
-Bordado de emblema
-Entrega em duas remessas",
+    features: features(["500 unidades", "Bordado de emblema", "Entrega em duas remessas"]),
     views: 1120,
     created_at: "2026-10-21T10:05:00Z",
     owner_id: "p-3",
@@ -326,7 +318,7 @@ Entrega em duas remessas",
     kind: "request",
     category: "Tecnologia",
     description:
-      "Empresa procura 20 portateis com i5, 16GB de memoria e disco SSD, com garantia minima de 12 meses e fatura.",
+      "Empresa procura 20 portateis com processador i5, 16GB de memoria e disco SSD, com garantia minima de 12 meses e fatura.",
     price: null,
     currency: "EUR",
     budget_max: 12000,
@@ -334,9 +326,7 @@ Entrega em duas remessas",
     city: "Lisboa",
     country: "Portugal",
     quantity: 20,
-    features: "20 unidades
-i5 / 16GB / SSD
-Garantia minima 12 meses",
+    features: features(["20 unidades", "i5, 16GB e SSD", "Garantia minima de 12 meses"]),
     views: 1560,
     created_at: "2026-10-22T08:10:00Z",
     owner_id: "p-3",
@@ -347,15 +337,13 @@ Garantia minima 12 meses",
     kind: "service",
     category: "Servicos",
     description:
-      "Acompanhamento mensal de contabilidade, reconciliacoes, obrigacoes fiscais e relatorios de gestao. Equipa certificada.",
+      "Acompanhamento mensal de contabilidade, reconciliacoes, obrigacoes fiscais e relatorios de gestao com equipa certificada.",
     price: 450,
     currency: "EUR",
     city: "Maputo",
     country: "Mocambique",
     delivery: "Reuniao mensal presencial ou remota",
-    features: "Fecho mensal
-Obrigacoes fiscais
-Relatorio de gestao",
+    features: features(["Fecho mensal", "Obrigacoes fiscais", "Relatorio de gestao"]),
     views: 620,
     created_at: "2026-10-13T15:00:00Z",
     owner_id: "p-1",
@@ -372,9 +360,7 @@ Relatorio de gestao",
     city: "Beira",
     country: "Mocambique",
     delivery: "Visita tecnica em 72 horas",
-    features: "Projeto e dimensionamento
-Instalacao certificada
-Contrato de manutencao",
+    features: features(["Projeto e dimensionamento", "Instalacao certificada", "Contrato de manutencao"]),
     views: 980,
     created_at: "2026-10-12T07:45:00Z",
     owner_id: "p-2",
@@ -385,15 +371,13 @@ Contrato de manutencao",
     kind: "service",
     category: "Logistica",
     description:
-      "Servico de transporte internacional de carga geral, com seguradora, rastreio por GPS e desembaraco documental.",
+      "Servico de transporte internacional de carga geral, com seguro, rastreio por GPS e desembaraco documental.",
     price: 1400,
     currency: "USD",
     city: "Maputo",
     country: "Mocambique",
     delivery: "Saida semanal as tercas-feiras",
-    features: "Camiao 30t
-Rastreio GPS
-Seguro de carga incluido",
+    features: features(["Camiao de 30t", "Rastreio GPS", "Seguro de carga incluido"]),
     views: 1440,
     created_at: "2026-10-16T12:30:00Z",
     owner_id: "p-5",
@@ -404,7 +388,7 @@ Seguro de carga incluido",
     kind: "product",
     category: "Logistica",
     description:
-      "Frota de quatro camioes de 10 toneladas, revisao recente e documentacao em ordem. Venda em conjunto ou unitaria.",
+      "Frota de quatro camioes de 10 toneladas com revisao recente e documentacao em ordem. Venda em conjunto ou unitaria.",
     price: 62000,
     currency: "ZAR",
     brand: "FleetLine",
@@ -413,10 +397,8 @@ Seguro de carga incluido",
     country: "Africa do Sul",
     quantity: 4,
     warranty: "Inspecao mecanica independente disponivel",
-    delivery: "Entrega em Moeda local entrega a combinar",
-    features: "4 unidades 10t
-Revisao recente
-Documentacao em ordem",
+    delivery: "Entrega a combinar na Africa do Sul",
+    features: features(["4 unidades de 10t", "Revisao recente", "Documentacao em ordem"]),
     views: 2010,
     created_at: "2026-10-11T09:00:00Z",
     owner_id: "p-5",
@@ -436,9 +418,7 @@ Documentacao em ordem",
     country: "Mocambique",
     stock: 1500,
     delivery: "Envio em 48 horas",
-    features: "Componentes originais
-Disponivel por unidade
-Envio rapido",
+    features: features(["Componentes originais", "Disponivel por unidade", "Envio rapido"]),
     views: 380,
     created_at: "2026-10-10T13:20:00Z",
     owner_id: "p-3",
