@@ -92,7 +92,7 @@ export default function StoreDetail() {
     );
   }
 
-  const mine = Boolean(user) && user.id === store.ownerId;
+  const mine = Boolean(user && user.id === store.ownerId);
 
   return (
     <div className="mx-auto max-w-7xl">
