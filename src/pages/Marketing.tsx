@@ -37,11 +37,12 @@ export default function Marketing() {
         setLoading(false);
         return;
       }
+      const me = user;
       let alive = true;
       async function run() {
         setLoading(true);
         try {
-          const mine = await listMyStores(user.id);
+          const mine = await listMyStores(me.id);
           if (!alive) return;
           setStores(mine);
           const first = mine.length > 0 ? mine[0] : null;
@@ -51,7 +52,7 @@ export default function Marketing() {
             first ? visitTotals(first.id) : Promise.resolve({ total: 0, byChannel: {} } as VisitTotals),
             first ? listAffiliates(first.id) : Promise.resolve([] as AffiliateView[]),
             first ? storeServiceState(first.id, first.tier) : Promise.resolve({} as Record<string, boolean>),
-            listCommissions(user.id),
+            listCommissions(me.id),
           ]);
           if (!alive) return;
           setCampaigns(rows[0]);

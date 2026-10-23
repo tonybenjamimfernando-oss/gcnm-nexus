@@ -44,7 +44,7 @@ export function storeBrief(input: { id?: string; ownerId?: string; name: string;
     city: input.city || null,
     category: input.category || null,
     tagline: input.tagline || null,
-    tier: input.tier || "starter",
+    tier: input.store.tier || "starter",
     url: input.url,
     refCode: input.refCode || null,
   };
@@ -170,10 +170,10 @@ export function marketingPlan(input: MarketingInput): MarketingTask[] {
   if (input.campaigns > 0 && input.liveCampaigns === 0) {
     tasks.push({ id: "ativar", title: "Pôr uma campanha a andar", detail: "Tens campanhas guardadas por lancar: ativa a que ja esta escrita.", route: "/marketing", minutes: 5, impact: "medio" });
   }
-  if (input.tier === "starter") {
+  if (input.store.tier === "starter") {
     tasks.push({ id: "plano", title: "Passar ao Pro para cobrar online", detail: "O Pro liga pagamentos, entregas e reservas e devolve saldo de bonus todos os meses.", route: "/lojas", minutes: 5, impact: "base" });
   }
-  if (input.tier !== "starter" && input.services.length < 4) {
+  if (input.store.tier !== "starter" && input.services.length < 4) {
     tasks.push({ id: "servicos", title: "Ligar mais servicos do plano", detail: "Ja pagas por eles: liga pagamentos, entregas e reservas para nao deixar valor na mesa.", route: "/lojas/painel", minutes: 10, impact: "base" });
   }
   if (input.daysSinceLaunch >= 30 && input.campaigns >= 3) {
@@ -194,7 +194,7 @@ export function scoreChecks(input: MarketingInput): Array<{ id: string; weight: 
     { id: "ativas", weight: 10, done: input.liveCampaigns > 0 },
     { id: "canais", weight: 10, done: input.channelsUsed.length >= 2 },
     { id: "visitas", weight: 8, done: input.visits > 0 },
-    { id: "plano", weight: 8, done: input.tier !== "starter" },
+    { id: "plano", weight: 8, done: input.store.tier !== "starter" },
   ];
 }
 
