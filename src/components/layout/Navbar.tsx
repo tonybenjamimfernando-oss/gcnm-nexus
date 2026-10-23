@@ -76,15 +76,15 @@ export default function Navbar() {
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 md:h-20 md:px-6">
-        <Link to="/" className="group flex shrink-0 items-center gap-2.5" aria-label="GCNM Nexus">
+        <Link to="/" className="group flex shrink-0 items-center gap-2.5" aria-label="FLOWEBUY">
           <span className="brand-orbit glass grid h-10 w-10 place-items-center rounded-2xl ring-1 ring-glow-400/40">
             <span className="h-3.5 w-3.5 rounded-full bg-glow-500 shadow-[0_0_18px_4px_rgba(45,123,253,0.65)]" />
           </span>
           <span className="leading-none">
             <span className="block font-display text-lg font-extrabold tracking-tight text-white">
-              GCNM<span className="text-glow-400">.</span>
+              FLOWE<span className="text-glow-400">BUY</span>
             </span>
-            <span className="block text-[9px] font-bold uppercase tracking-[0.3em] text-haze-500">Nexus</span>
+            <span className="block text-[9px] font-bold uppercase tracking-[0.3em] text-haze-500">FLOWER · WEB · BUY</span>
           </span>
         </Link>
 
