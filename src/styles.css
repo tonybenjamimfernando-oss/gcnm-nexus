@@ -506,3 +506,82 @@ body {
 @media (max-width: 640px) {
   body { background-position: center top, 52% 3rem; background-size: cover, auto 75vh; background-attachment: scroll, scroll; }
 }
+
+
+/* FLOWEBUY — correcao visual visivel da identidade e do mockup em camadas */
+:root {
+  --flowebuy-emerald: #12e6ad;
+  --flowebuy-deep: #031f1b;
+  --flowebuy-mint: #dffff5;
+  --flowebuy-gold: #ffd27b;
+}
+html { background: #031f1b; }
+body {
+  background-color: #031f1b !important;
+  background-image:
+    radial-gradient(ellipse at 14% 8%, rgba(12, 178, 133, .22), transparent 34%),
+    radial-gradient(ellipse at 88% 21%, rgba(255, 194, 89, .10), transparent 28%),
+    linear-gradient(155deg, #041c19 0%, #062e28 44%, #021511 100%) !important;
+  background-attachment: scroll !important;
+}
+.aurora .a1 { background: radial-gradient(circle, rgba(18,230,173,.34), transparent 68%) !important; }
+.aurora .a2 { background: radial-gradient(circle, rgba(255,194,89,.18), transparent 68%) !important; }
+.aurora .a3 { background: radial-gradient(circle, rgba(51,215,179,.19), transparent 68%) !important; }
+.glass, .glass-deep, .glass-strong {
+  border-color: rgba(116,255,220,.22) !important;
+  background-color: rgba(5,45,38,.64) !important;
+  backdrop-filter: blur(24px) saturate(155%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(155%) !important;
+}
+.glass-strong {
+  background: linear-gradient(145deg, rgba(15,89,73,.82), rgba(4,34,29,.83) 55%, rgba(3,25,22,.92)) !important;
+  box-shadow: 0 38px 100px -48px rgba(0,0,0,.94), 0 0 0 1px rgba(111,255,218,.08), inset 0 1px 0 rgba(230,255,248,.16) !important;
+}
+.stage {
+  perspective: 1600px;
+  padding: 0 1rem 1.8rem;
+  isolation: isolate;
+}
+.stage::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 12%; right: 12%; top: 10%; bottom: 5%;
+  border-radius: 3rem;
+  background: linear-gradient(135deg, rgba(18,230,173,.16), rgba(255,210,123,.08));
+  filter: blur(32px);
+}
+.stage > .layer-1 {
+  transform: rotateY(-5deg) rotateX(3deg) translateZ(24px);
+  border-radius: 2rem !important;
+  border: 1px solid rgba(151,255,226,.30);
+  box-shadow: 0 45px 100px -48px rgba(0,0,0,.95), 0 0 55px rgba(18,230,173,.10), inset 0 1px 0 rgba(255,255,255,.18) !important;
+}
+.stage .glass-deep {
+  border-radius: 1.4rem !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
+}
+.stage .glass.rounded-3xl {
+  background: linear-gradient(145deg, rgba(12,92,73,.76), rgba(3,31,27,.9)) !important;
+}
+.layer-stack::before { background: rgba(18,230,173,.07) !important; border-color: rgba(114,255,218,.15) !important; }
+.layer-stack::after { background: rgba(255,210,123,.045) !important; border-color: rgba(255,210,123,.12) !important; }
+.neo { border-color: rgba(120,255,222,.20); }
+.neo-glow { background: linear-gradient(150deg, rgba(18,230,173,.30), rgba(18,230,173,.04) 70%) !important; border-color: rgba(18,230,173,.44) !important; }
+.neon { text-shadow: 0 0 24px rgba(18,230,173,.30) !important; }
+.text-glow-400, .text-glow-500 { color: #65f5cd !important; }
+.text-mint-400 { color: #a0ffe3 !important; }
+.price-cta {
+  color: #08231b !important;
+  background: linear-gradient(115deg,#b77916 0%,#f6d889 22%,#fff0b8 38%,#d79a2b 58%,#ffdf8c 78%,#a76b12 100%) !important;
+  border-color: rgba(255,231,171,.88) !important;
+}
+.trend-panel { background: linear-gradient(155deg,rgba(5,48,40,.96),rgba(3,25,22,.96)) !important; border-color: rgba(255,210,123,.24) !important; }
+.market-header { background: rgba(3,31,27,.88) !important; border-bottom-color: rgba(116,255,220,.22) !important; }
+@media (max-width: 767px) {
+  .stage { padding: 0 .15rem 1.2rem; perspective: 1100px; }
+  .stage > .layer-1 { transform: none; border-radius: 1.35rem !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stage > .layer-1 { transform: none; }
+}
