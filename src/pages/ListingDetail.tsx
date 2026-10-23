@@ -81,6 +81,16 @@ export default function ListingDetail() {
   const saved = favorites.has(item.id);
   const room = findRoom(roomForListing({ title: item.title, category: item.category, brand: item.brand }));
   const converted = currency !== item.currency && item.price !== null;
+  const featureList = item.features
+    ? item.features
+        .split("|")
+        .map(function trim(part) {
+          return part.trim();
+        })
+        .filter(function valid(part) {
+          return part.length > 0;
+        })
+    : [];
 
   function save() {
     if (!item) return;
@@ -136,6 +146,22 @@ export default function ListingDetail() {
               {item.description || "Sem descricao detalhada."}
             </p>
           </GlassCard>
+
+          {featureList.length > 0 ? (
+            <GlassCard className="mt-4 p-5">
+              <h2 className="font-display text-lg font-bold text-white">Caracteristicas</h2>
+              <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                {featureList.map(function render(feature) {
+                  return (
+                    <p key={feature} className="flex items-start gap-2 text-sm leading-6 text-haze-300">
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-mint-400" />
+                      {feature}
+                    </p>
+                  );
+                })}
+              </div>
+            </GlassCard>
+          ) : null}
 
           <GlassCard className="mt-4 p-5">
             <h2 className="font-display text-lg font-bold text-white">Detalhes da oferta</h2>
