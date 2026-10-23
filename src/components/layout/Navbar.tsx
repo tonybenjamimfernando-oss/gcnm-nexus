@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Menu, Search, UserRound, X } from "lucide-react";
 import CurrencySwitcher from "@/components/ui/CurrencySwitcher";
@@ -16,12 +16,13 @@ const LINKS = [
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useSession();
   const [scrolled, setScrolled] = useState(false);
   const [hovered, setHovered] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
   const [term, setTerm] = useState("");
-  const [path, setPath] = useState("/");
+  const path = location.pathname;
 
   useEffect(function onScroll() {
     function update() {
@@ -35,11 +36,10 @@ export default function Navbar() {
   }, []);
 
   useEffect(
-    function onRoute() {
-      setPath(window.location.pathname);
+    function closeOnRoute() {
       setOpen(false);
     },
-    [],
+    [path],
   );
 
   function activeIndex(): number {
@@ -167,12 +167,19 @@ export default function Navbar() {
           <nav className="mt-4 grid gap-1" aria-label="Navegacao movel">
             {LINKS.map(function render(link) {
               return (
-                <Link key={link.to} to={link.to} className="rounded-xl px-3 py-3 text-sm font-semibold text-haze-300 hover:bg-white/5 hover:text-white">
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className="rounded-xl px-3 py-3 text-sm font-semibold text-haze-300 hover:bg-white/5 hover:text-white"
+                >
                   {link.label}
                 </Link>
               );
             })}
-            <Link to={user ? "/painel" : "/entrar"} className="rounded-xl px-3 py-3 text-sm font-semibold text-haze-300 hover:bg-white/5 hover:text-white">
+            <Link
+              to={user ? "/painel" : "/entrar"}
+              className="rounded-xl px-3 py-3 text-sm font-semibold text-haze-300 hover:bg-white/5 hover:text-white"
+            >
               {user ? "Painel" : "Entrar"}
             </Link>
           </nav>
