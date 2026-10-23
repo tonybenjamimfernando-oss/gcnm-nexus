@@ -49,7 +49,7 @@ export default function Plans() {
             }}
             className={cn(
               "h-10 rounded-xl px-4 text-xs font-bold transition",
-              cycle === "monthly" ? "bg-glow-500 text-white" : "text-haze-300 hover:text-white",
+              cycle === "monthly" ? "bg-amber-300 text-ink-950 shadow-[0_0_22px_rgba(255,196,107,0.35)]" : "text-haze-300 hover:text-white",
             )}
           >
             Mensal
@@ -61,7 +61,7 @@ export default function Plans() {
             }}
             className={cn(
               "h-10 rounded-xl px-4 text-xs font-bold transition",
-              cycle === "yearly" ? "bg-glow-500 text-white" : "text-haze-300 hover:text-white",
+              cycle === "yearly" ? "bg-amber-300 text-ink-950 shadow-[0_0_22px_rgba(255,196,107,0.35)]" : "text-haze-300 hover:text-white",
             )}
           >
             Anual (2 meses gratis)
@@ -82,7 +82,7 @@ export default function Plans() {
             <GlassCard
               key={plan.id}
               tone={plan.highlight ? "strong" : "default"}
-              className={cn("relative flex flex-col p-5", plan.highlight ? "border-glow-400/40" : "")}
+              className={cn("plan-card relative flex flex-col p-5", plan.highlight ? "border-amber-300/50" : "")}
             >
               {plan.highlight ? (
                 <span className="absolute -top-3 left-5 inline-flex items-center gap-1 rounded-full bg-glow-500 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-white">
@@ -93,7 +93,7 @@ export default function Plans() {
               <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-haze-500">{plan.audience}</p>
               <h2 className="mt-2 font-display text-xl font-extrabold text-white">{plan.name}</h2>
               <p className="mt-1 text-sm text-haze-300">{plan.tagline}</p>
-              <p className="neon mt-5 font-display text-3xl font-extrabold text-white">
+              <p className="plan-price mt-5 font-display text-3xl font-extrabold">
                 {isFree ? "Gratis" : money(price, "USD")}
               </p>
               <p className="mt-1 text-xs text-haze-500">{isFree ? "sempre" : cycle === "monthly" ? "por mes" : "por ano"}</p>
@@ -108,7 +108,7 @@ export default function Plans() {
                 })}
               </ul>
               <div className="mt-6">
-                <GlowButton to="/entrar" variant={plan.highlight ? "primary" : "glass"} className="w-full">
+                <GlowButton to="/entrar" variant={plan.highlight ? "primary" : "glass"} className="price-cta w-full">
                   {plan.cta}
                 </GlowButton>
               </div>
