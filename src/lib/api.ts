@@ -11,6 +11,7 @@ export type ListingView = {
   kind: string;
   category: string;
   description: string;
+  features: string | null;
   price: number | null;
   currency: string;
   city: string | null;
@@ -101,6 +102,7 @@ function toView(row: ListingRow, profiles: Map<string, ProfileRow>, reviews: Map
     kind: row.kind,
     category: row.category,
     description: row.description,
+    features: row.features,
     price: row.price,
     currency: row.currency || BASE_CURRENCY,
     city: row.city,
