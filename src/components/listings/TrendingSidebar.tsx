@@ -9,20 +9,41 @@ import { useCurrency } from "@/lib/currency";
 export default function TrendingSidebar() {
   const [items, setItems] = useState<ListingView[]>([]);
   const [loading, setLoading] = useState(true);
+  const [monthly, setMonthly] = useState(true);
   const { money } = useCurrency();
 
   useEffect(function loadTrends() {
     let active = true;
-    listListings({ sort: "views", limit: 8 })
-      .then(function ready(result) {
-        if (active) setItems(result);
-      })
-      .catch(function ignoreUnavailableTrends() {
+    async function run() {
+      try {
+        const recent = await listListings({ sort: "recent", limit: 100 });
+        const now = new Date();
+        const thisMonth = recent
+          .filter(function publishedThisMonth(item) {
+            const created = new Date(item.createdAt);
+            return created.getFullYear() === now.getFullYear() && created.getMonth() === now.getMonth();
+          })
+          .sort(function mostViewedFirst(a, b) {
+            return b.views - a.views;
+          })
+          .slice(0, 8);
+        if (!active) return;
+        if (thisMonth.length > 0) {
+          setItems(thisMonth);
+          setMonthly(true);
+        } else {
+          const popular = await listListings({ sort: "views", limit: 8 });
+          if (!active) return;
+          setItems(popular);
+          setMonthly(false);
+        }
+      } catch {
         if (active) setItems([]);
-      })
-      .finally(function finish() {
+      } finally {
         if (active) setLoading(false);
-      });
+      }
+    }
+    run();
     return function stop() {
       active = false;
     };
@@ -37,11 +58,11 @@ export default function TrendingSidebar() {
         <span className="trend-heading-icon"><Flame className="h-4 w-4" /></span>
         <div>
           <p className="trend-eyebrow">A mover o mercado</p>
-          <h2>Tendências do mês</h2>
+          <h2>{monthly ? "Tendências do mês" : "Populares agora"}</h2>
         </div>
         <TrendingUp className="trend-heading-chart h-5 w-5" />
       </div>
-      <p className="trend-intro">Ofertas populares para descobrir agora.</p>
+      <p className="trend-intro">{monthly ? "Ofertas publicadas este mês, ordenadas pelas visualizações." : "Ainda sem ofertas deste mês; veja as ofertas mais vistas."}</p>
       {loading ? (
         <div className="trend-loading"><span /> A reunir tendências...</div>
       ) : (
