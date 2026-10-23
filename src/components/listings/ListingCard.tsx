@@ -36,9 +36,11 @@ export default function ListingCard({ item }: { item: ListingView }) {
 
   return (
     <motion.article
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -6 }}
       transition={{ type: "spring", stiffness: 320, damping: 26 }}
-      className="group relative"
+      className="listing-showcase group relative"
     >
       <div className="glass-deep relative overflow-hidden rounded-3xl transition duration-300 group-hover:border-glow-400/40">
         <div className="relative aspect-[16/10] overflow-hidden">
@@ -89,7 +91,7 @@ export default function ListingCard({ item }: { item: ListingView }) {
             </Link>
           </h3>
 
-          <p className="neon mt-3 font-display text-xl font-extrabold text-white">{money(item.price, item.currency)}</p>
+          <p className="listing-price neon mt-3 font-display text-xl font-extrabold">{money(item.price, item.currency)}</p>
           {item.price === null && item.budgetMax ? (
             <p className="mt-1 text-xs text-haze-500">Orcamento ate {money(item.budgetMax, item.currency)}</p>
           ) : null}
