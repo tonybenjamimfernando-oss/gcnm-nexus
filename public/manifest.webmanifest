@@ -1,23 +1,16 @@
 {
-  "name": "GCNM Nexus - Rede Global de Comercio",
-  "short_name": "GCNM",
-  "description": "Compradores, vendedores, empresas e prestadores de servicos num so mercado global.",
+  "name": "FLOWEBUY — Mercado Global",
+  "short_name": "FLOWEBUY",
+  "description": "Compradores, vendedores, empresas e prestadores de serviços num só mercado global.",
   "start_url": "/gcnm-nexus/",
   "scope": "/gcnm-nexus/",
   "display": "standalone",
   "background_color": "#05080f",
-  "theme_color": "#05080f",
+  "theme_color": "#062c29",
   "icons": [
     {
-      "src": "/gcnm-nexus/icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/gcnm-nexus/icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "src": "/gcnm-nexus/flowebuy-rose.webp",
+      "type": "image/webp"
     }
   ]
 }

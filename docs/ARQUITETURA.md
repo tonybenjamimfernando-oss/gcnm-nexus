@@ -1,4 +1,4 @@
-# Arquitetura - GCNM Nexus
+# Arquitetura — FLOWEBUY
 
 ## 1. Stack
 
@@ -7,7 +7,7 @@
     Rotas      react-router-dom 7
     Movimento  framer-motion (camadas flutuantes e pilula de navegacao)
     Icones     lucide-react
-    Dados      Supabase (Postgres + Auth + Storage), o mesmo esquema do GCNM
+    Dados      Supabase (Postgres + Auth + Storage)
 
 ## 2. Estrutura de pastas
 
@@ -19,7 +19,7 @@
 
 ## 3. Dados
 
-O esquema e o mesmo do GCNM, para entregar o mesmo servico sem migrar conteudo:
+FLOWEBUY é a nova marca do projeto anteriormente identificado como GCNM Nexus. O esquema de dados existente deve ser preservado para evitar migrações desnecessárias:
 
     listings          ofertas: produto, servico, pedido de compra e oportunidade
     profiles          membros, empresas e prestadores, com verificacao
@@ -55,7 +55,7 @@ referencia e serao substituidas por taxas ao vivo na fase de pagamentos.
 - Dados fiscais e contactos privados ficam em tabela separada (profile_private).
 - Nenhum ficheiro de ambiente e versionado; .env.example traz apenas os nomes das variaveis.
 
-## 7. Deploy
+## 7. Publicação e WordPress
 
 O build gera ficheiros estaticos (pasta dist). Publique em Cloudflare Pages ou Workers com as variaveis
 VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY definidas no ambiente. O pipeline do GitHub valida tipos e build em cada
