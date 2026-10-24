@@ -1,0 +1,16 @@
+{
+  "name": "FLOWEBUY — Mercado Global",
+  "short_name": "FLOWEBUY",
+  "description": "Compradores, vendedores, empresas e prestadores de serviços num só mercado global.",
+  "start_url": "/gcnm-nexus/",
+  "scope": "/gcnm-nexus/",
+  "display": "standalone",
+  "background_color": "#05080f",
+  "theme_color": "#062c29",
+  "icons": [
+    {
+      "src": "/gcnm-nexus/flowebuy-rose.webp",
+      "type": "image/webp"
+    }
+  ]
+}
