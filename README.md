@@ -1,6 +1,6 @@
-# GCNM Nexus
+# FLOWEBUY — Mercado Global
 
-Versao melhorada do GCNM (Global Commerce Network Map): a mesma proposta e o mesmo servico - ligar compradores, vendedores, empresas e prestadores de servicos num so mercado global - com uma interface nova, escura, em glassmorphism 3D, salas comerciais por sector e precos em qualquer moeda.
+FLOWEBUY é a nova marca do projeto anteriormente identificado como GCNM Nexus. Mantém a mesma proposta: ligar compradores, vendedores, empresas e prestadores de serviços num mercado global, com interface escura em glassmorphism 3D, salas comerciais por sector e preços em várias moedas.
 
 ## Incluido nesta base
 
@@ -70,6 +70,6 @@ No Stripe, aponte o webhook para `https://<projeto>.supabase.co/functions/v1/str
 - docs/ARQUITETURA.md - stack, dados, moeda, pagamentos, seguranca
 - docs/ROADMAP.md - 12 salas x 10 modulos e fases seguintes
 
-## Fases seguintes
+## Publicação e integração WordPress\n\nO repositório contém a aplicação React/Vite do FLOWEBUY. O WordPress.com criado em https://flowebuy.wordpress.com é um site separado e não executa nem importa automaticamente o código React, as rotas, a autenticação ou as funções Supabase. Até configurar uma integração compatível, o WordPress deve servir como presença institucional e encaminhar os visitantes para a aplicação alojada numa plataforma compatível. A publicação atual deve permanecer intacta durante esta transição.\n\n## Fases seguintes
 
 Destaques pagos e comissao de afiliacao, ativacao automatica do plano por pagamento, SEO por sala, testes end-to-end no browser e monitorizacao de erros. Ver docs/ROADMAP.md.
